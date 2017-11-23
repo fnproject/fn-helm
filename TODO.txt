@@ -1,0 +1,7 @@
+
+* DB auth variables from chart secrets
+* expand out variables for images etc.
+* finish testing FN
+* test for flow
+* fn UI
+* flow UI

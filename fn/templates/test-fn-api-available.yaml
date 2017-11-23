@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-fn-api-available-test"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: {{ .Release.Name }}-fn-api-available
+    image: fnproject/fn:latest
+    env:
+      - name: API_URL
+        value: http://{{ template "fullname" . }}
+    command: ["sh", "-c", "fn apps list"]
+  restartPolicy: Never
