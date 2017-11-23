@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: {{ template "fullname" . }}
+spec:
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: fn
+        role: fn-service
+    spec:
+      containers:
+      - name: fn-service
+        image:
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 80
+        env:
+        - name: PORT
+          value: "80"
+        - name: MQ_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fn-service-config
+              key: MQ_URL
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fn-service-config
+              key: DB_URL
+#        - name: ZIPKIN_URL
+#          valueFrom:
+#            configMapKeyRef:
+#              name: fn-service-config
+#              key: ZIPKIN_URL
+      - name: fn-ui
+        image: fnproject/ui:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PORT
+          value: "8080"
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fn-service-config
+              key: API_URL

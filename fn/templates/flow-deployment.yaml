@@ -1,0 +1,37 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: flow-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: flow
+        role: flow-service
+    spec:
+      containers:
+        - name: flow
+          image: fnproject/flow:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: DB_URL
+              value: "inmem:"
+            - name: API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: fn-service-config
+                  key: API_URL
+        - name: flow-ui
+          image: fnproject/flow:ui
+          ports:
+            - containerPort: 3000
+          env:
+            - name: API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: fn-service-config
+                  key: API_URL
+            - name: COMPLETER_BASE_URL
+              value: http://flow-service:8081

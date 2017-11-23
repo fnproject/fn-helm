@@ -1,0 +1,83 @@
+
+---
+      # TODO: integrate with Sauron (formerly known as core-services)
+      # - name: statsd-exporter
+      #   image: registry.oracledx.com/odxsre/core-services-statsd-exporter:latest
+      #   imagePullPolicy: IfNotPresent
+      # - name: prometheus-pusher
+      #   image: registry.oracledx.com/odxsre/core-services-prometheus-pusher:latest
+      #   imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fn-mysql-master
+  labels:
+    app: mysql
+    role: datastore
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: mysql
+    role: datastore
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: fn-mysql-master
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+        role: datastore
+    spec:
+      containers:
+      - name: fn-mysql
+        image: mysql:5.7
+        args:
+          - "--max-connections=500"
+          - "--wait-timeout=300"
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: boomsauce
+        - name: MYSQL_DATABASE
+          value: fn
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fn-redis-master
+  labels:
+    app: redis
+    role: mq
+spec:
+  ports:
+  - port: 6379
+    targetPort: 6379
+  selector:
+    app: redis
+    role: mq
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: fn-redis-master
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: mq
+    spec:
+      containers:
+      - name: fn-redis
+        image: redis:4.0
+        ports:
+        - containerPort: 6379

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fn-config
+data:
+  MQ_URL: redis://fn-redis-master
+  DB_URL: mysql://root:boomsauce@tcp(fn-mysql-master:3306)/fn
+  API_URL: http://fn-service

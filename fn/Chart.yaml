@@ -1,0 +1,18 @@
+name: fn
+version: 0.1.0
+appVersion: 0.0.161
+description: Open source container-based Function as a Service (FaaS) platform
+keywords:
+- faas
+- fn
+- containers
+- functions
+home: http://fnproject.io/
+icon: http://fnproject.io/images/fn-300x125.png
+sources:
+- https://github.com/fnproject/fn
+- https://github.com/fnproject/flow
+maintainers:
+#TODO
+- name: fnproject
+engine: gotpl
