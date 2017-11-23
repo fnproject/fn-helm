@@ -12,11 +12,11 @@ spec:
     metadata:
       labels:
         app: fn
-        role: fn-service
+        role: fn-node
     spec:
       containers:
       - name: fn-service
-        image:
+        image: fnproject/fnserver:latest
         imagePullPolicy: IfNotPresent
         securityContext:
           privileged: true
@@ -25,31 +25,12 @@ spec:
         env:
         - name: PORT
           value: "80"
-        - name: MQ_URL
+        - name: DB_PASSWD
           valueFrom:
-            configMapKeyRef:
-              name: fn-service-config
-              key: MQ_URL
+            secretKeyRef:
+              name: {{ template "fullname" . }}-mysql
+              key: mysql-root-password
+        - name: DB_HOST
+          value: {{ template "fullname" . }}-mysql
         - name: DB_URL
-          valueFrom:
-            configMapKeyRef:
-              name: fn-service-config
-              key: DB_URL
-#        - name: ZIPKIN_URL
-#          valueFrom:
-#            configMapKeyRef:
-#              name: fn-service-config
-#              key: ZIPKIN_URL
-      - name: fn-ui
-        image: fnproject/ui:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8080
-        env:
-        - name: PORT
-          value: "8080"
-        - name: API_URL
-          valueFrom:
-            configMapKeyRef:
-              name: fn-service-config
-              key: API_URL
+          value: mysql://root:$DB_PASSWD@tcp($DB_HOST:3306)/fn

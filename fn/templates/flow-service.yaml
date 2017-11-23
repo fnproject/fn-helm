@@ -1,19 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: flow-service
+  name: {{ template "fullname" . }}-flow
   labels:
-    app: flow
-    role: flow-service
+    app: {{ template "fullname" . }}
+    role: flow-svc
 spec:
   type: LoadBalancer
   ports:
-    - name: flow-ui
-      port: 8300
-      targetPort: 3000
     - name: flow
       port: 8081
       targetPort: 8081
   selector:
-    app: flow
-    role: flow-service
+    app: {{ template "fullname" . }}
+    role: flow-server

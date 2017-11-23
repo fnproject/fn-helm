@@ -1,5 +1,9 @@
 imagePullPolicy: IfNotPresent
 
+
+fncli:
+  image: fnproject/fn:0.4.23
+
 fn:
   image: fnproject/fn-service:0.0.161
   externalPort: 8080
@@ -9,6 +13,7 @@ flow:
   externalPort: 8081
 
 fnui:
+  image: fnproject/fn:0.4.2
   externalPort: 4000
 
 mysql:

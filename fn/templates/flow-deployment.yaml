@@ -1,14 +1,17 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: flow-service
+  name: {{ template "fullname" . }}-flow-depl
+  labels:
+    app: {{ template "fullname" . }}
+    role: flow-depl
 spec:
   replicas: 1
   template:
     metadata:
-      labels:
-        app: flow
-        role: flow-service
+       labels:
+         app: {{ template "fullname" . }}
+         role: flow-server
     spec:
       containers:
         - name: flow
@@ -23,15 +26,3 @@ spec:
                 configMapKeyRef:
                   name: fn-service-config
                   key: API_URL
-        - name: flow-ui
-          image: fnproject/flow:ui
-          ports:
-            - containerPort: 3000
-          env:
-            - name: API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: fn-service-config
-                  key: API_URL
-            - name: COMPLETER_BASE_URL
-              value: http://flow-service:8081
