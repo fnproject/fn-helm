@@ -28,9 +28,9 @@ spec:
         - name: DB_PASSWD
           valueFrom:
             secretKeyRef:
-              name: {{ template "fullname" . }}-mysql
-              key: mysql-root-password
+              name: {{ .Release.Name }}-mysql
+              key: mysql-password
         - name: DB_HOST
-          value: {{ template "fullname" . }}-mysql
+          value: {{ .Release.Name }}-mysql
         - name: DB_URL
-          value: mysql://root:$DB_PASSWD@tcp($DB_HOST:3306)/fn
+          value: mysql://root:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fn

@@ -10,6 +10,6 @@ spec:
     image: fnproject/fn:latest
     env:
       - name: API_URL
-        value: http://{{ template "fullname" . }}
+        value: http://{{ template "fullname" . }}-api:8080
     command: ["sh", "-c", "fn apps list"]
   restartPolicy: Never

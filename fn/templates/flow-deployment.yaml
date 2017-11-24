@@ -22,7 +22,4 @@ spec:
             - name: DB_URL
               value: "inmem:"
             - name: API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: fn-service-config
-                  key: API_URL
+              value: http://{{ template "fullname" . }}-api:8080

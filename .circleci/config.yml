@@ -30,7 +30,10 @@ jobs:
             sudo kubectl cluster-info
       - run:
           command: |
-            sudo
+            sudo helm init
       - run:
           command: |
-            sudo kubectl get deployment
+            sudo apt isntall bats
+      - run:
+          command: |
+            sudo kubectl get deployment --all-namespaces
