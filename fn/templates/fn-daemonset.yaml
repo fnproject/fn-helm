@@ -21,10 +21,10 @@ spec:
         securityContext:
           privileged: true
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         env:
         - name: PORT
-          value: "80"
+          value: "8080"
         - name: DB_PASSWD
           valueFrom:
             secretKeyRef:
@@ -33,4 +33,13 @@ spec:
         - name: DB_HOST
           value: {{ .Release.Name }}-mysql
         - name: DB_URL
-          value: mysql://root:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fn
+          value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
+        - name: MQ_HOST
+          value: {{ .Release.Name }}-redis
+        - name: MQ_PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-redis
+              key: redis-password
+        - name: MQ_URL
+          value: redis://user:$(MQ_PASSWD)@$(MQ_HOST):6379/

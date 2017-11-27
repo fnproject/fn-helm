@@ -2,6 +2,9 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: "{{ .Release.Name }}-fn-api-available-test"
+  labels:
+     app: {{ template "fullname" . }}
+     role: flow-depl
   annotations:
     "helm.sh/hook": test-success
 spec:
@@ -11,5 +14,5 @@ spec:
     env:
       - name: API_URL
         value: http://{{ template "fullname" . }}-api:8080
-    command: ["sh", "-c", "fn apps list"]
+    command: ["apps", "list"]
   restartPolicy: Never

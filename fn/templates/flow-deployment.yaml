@@ -19,7 +19,16 @@ spec:
           ports:
             - containerPort: 8081
           env:
-            - name: DB_URL
-              value: "inmem:"
-            - name: API_URL
-              value: http://{{ template "fullname" . }}-api:8080
+          - name: LISTEN
+            value: :8081
+          - name: DB_PASSWD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-mysql
+                key: mysql-password
+          - name: DB_HOST
+            value: {{ .Release.Name }}-mysql
+          - name: DB_URL
+            value: mysql://fn:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fn
+          - name: API_URL
+            value: http://{{ template "fullname" . }}-api:8080

@@ -28,8 +28,8 @@ mysql:
     accessMode: ReadWriteOnce
     size: 8Gi
 
-  mysqlDatabase: fn
-  mysqlUser: fn
+  mysqlDatabase: fndb
+  mysqlUser: fnapp
   mysqlPassword: boomsauce
 
 ##
@@ -42,6 +42,7 @@ redis:
     storageClass: redis
     accessMode: ReadWriteOnce
     size: 8Gi
+  usePassword: true
 
 ingress:
   enabled: false
