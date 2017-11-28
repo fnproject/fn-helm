@@ -28,15 +28,16 @@ jobs:
             JSONPATH='{range .items[*]}{@.metadata.name}:{range @.status.conditions[*]}{@.type}={@.status};{end}{end}'; until sudo kubectl get nodes -o jsonpath="$JSONPATH" 2>&1 | grep -q "Ready=True"; do sleep 1; done
       - run:
           command: |
+            sudo add-apt-repository -y  ppa:duggan/bats
+            sudo apt-get update
+            sudo apt install bats socat util-linux
+            docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
+      - run:
+          command: |
             sudo kubectl cluster-info
       - run:
           command: |
             helm init
-      - run:
-          command: |
-            sudo add-apt-repository -y  ppa:duggan/bats
-            sudo apt-get update
-            sudo apt install bats socat util-linux
       - run:
           command: |
             kubectl get all --all-namespaces
