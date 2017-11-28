@@ -18,6 +18,9 @@
    Working example with fn
 
 * option of Running DooD?
+* Deploy to our own repo (or somewhere on fnproject.io? )
+* push-button release from circle?
+* auto-build from  flow/fn/cli changes?
 
 Done:
 * DB auth variables from chart secrets
