@@ -18,6 +18,12 @@ spec:
           image: fnproject/flow:latest
           ports:
             - containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8081
+            initialDelaySeconds: 3
+            periodSeconds: 3
           env:
           - name: LISTEN
             value: :8081

@@ -11,12 +11,16 @@
 * Split flow and  fn DBs
    -  use   DB creation with init containers using root creds?  -
 * re-enable redis auth
-* readyness checks for fn & flow
 
-Docs: basic example
+* Chart Docs:
+   Notes.txt
+   README.md
+   Working example with fn
 
-Running DooD?
+* option of Running DooD?
 
 Done:
 * DB auth variables from chart secrets
 * helm test for fn
+* readyness checks for fn
+* readyness checks for flow
