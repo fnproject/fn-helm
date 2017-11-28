@@ -42,4 +42,5 @@ jobs:
             kubectl get all --all-namespaces
       - run:
           command: |
+            helm dep build fn
             bats tests
