@@ -3,7 +3,7 @@
 * circle install tests -
     -  create cluster (run helm tests)
     -  create second cluster  (test)
-* make services configurable (LB?) 
+* make services configurable (LB?)
 * expand out variables for images etc.
 * fn UI
 * flow UI
@@ -11,6 +11,7 @@
 * fnlb ?
 * Split flow and  fn DBs
    -  use   DB creation with init containers using root creds?  -
+* re-enable redis auth
 
 Docs: basic example
 
