@@ -1,11 +1,16 @@
-
-* flow DB hookup
-* DB auth variables from chart secrets
+* helm test for fn
 * expand out variables for images etc.
-* finish testing FN
 * test for flow
 * fn UI
 * flow UI
 * notes
 * fnlb ? - need to
-* Split flow and DBs .
+* Split flow and  fn DBs .
+* DB creation with init containers using root creds
+
+Docs: basic example
+
+Running DooD?
+
+Done:
+* DB auth variables from chart secrets

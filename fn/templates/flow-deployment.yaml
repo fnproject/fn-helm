@@ -29,6 +29,7 @@ spec:
           - name: DB_HOST
             value: {{ .Release.Name }}-mysql
           - name: DB_URL
-            value: mysql://fn:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fn
+            value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
           - name: API_URL
             value: http://{{ template "fullname" . }}-api:8080
+
