@@ -36,10 +36,11 @@ spec:
           value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
         - name: MQ_HOST
           value: {{ .Release.Name }}-redis
-        - name: MQ_PASSWD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-redis
-              key: redis-password
+#  TODO:
+#        - name: MQ_PASSWD
+#          valueFrom:
+#            secretKeyRef:
+#              name: {{ .Release.Name }}-redis
+#              key: redis-password
         - name: MQ_URL
-          value: redis://user:$(MQ_PASSWD)@$(MQ_HOST):6379/
+          value: redis://(MQ_HOST):6379/

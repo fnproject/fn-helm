@@ -42,7 +42,7 @@ redis:
     storageClass: redis
     accessMode: ReadWriteOnce
     size: 8Gi
-  usePassword: true
+  usePassword: false
 
 ingress:
   enabled: false

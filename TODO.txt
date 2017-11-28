@@ -1,12 +1,16 @@
 * helm test for fn
+* helm test for flow
+* circle install tests -
+    -  create cluster (run helm tests)
+    -  create second cluster  (test)
+* make services configurable (LB?) 
 * expand out variables for images etc.
-* test for flow
 * fn UI
 * flow UI
-* notes
-* fnlb ? - need to
-* Split flow and  fn DBs .
-* DB creation with init containers using root creds
+* Install instructions (main README)
+* fnlb ?
+* Split flow and  fn DBs
+   -  use   DB creation with init containers using root creds?  -
 
 Docs: basic example
 

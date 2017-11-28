@@ -13,6 +13,6 @@ spec:
     image: fnproject/fn:latest
     env:
       - name: API_URL
-        value: http://{{ template "fullname" . }}-api
+        value: http://{{ template "fullname" . }}-api:8080
     command: ["/app/fn", "apps", "list"]
   restartPolicy: Never
