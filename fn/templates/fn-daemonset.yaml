@@ -43,4 +43,4 @@ spec:
 #              name: {{ .Release.Name }}-redis
 #              key: redis-password
         - name: MQ_URL
-          value: redis://(MQ_HOST):6379/
+          value: redis://$(MQ_HOST):6379/
