@@ -30,7 +30,7 @@ jobs:
           command: |
             sudo add-apt-repository -y  ppa:duggan/bats
             sudo apt-get update
-            sudo apt install bats socat util-linux
+            sudo apt install bats socat
             docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
       - run:
           command: |
@@ -38,6 +38,7 @@ jobs:
       - run:
           command: |
             helm init
+            until helm version ; do sleep 1; done
       - run:
           command: |
             kubectl get all --all-namespaces
