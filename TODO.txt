@@ -1,4 +1,3 @@
-* helm test for fn
 * helm test for flow
 * circle install tests -
     -  create cluster (run helm tests)
@@ -12,6 +11,7 @@
 * Split flow and  fn DBs
    -  use   DB creation with init containers using root creds?  -
 * re-enable redis auth
+* readyness checks for fn & flow
 
 Docs: basic example
 
@@ -19,3 +19,4 @@ Running DooD?
 
 Done:
 * DB auth variables from chart secrets
+* helm test for fn

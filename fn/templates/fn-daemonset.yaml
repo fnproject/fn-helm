@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       labels:
-        app: fn
+        app: {{ template "fullname" . }}
         role: fn-node
     spec:
       containers:

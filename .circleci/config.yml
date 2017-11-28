@@ -33,7 +33,10 @@ jobs:
             sudo helm init
       - run:
           command: |
-            sudo apt isntall bats
+            sudo apt install bats
       - run:
           command: |
             sudo kubectl get deployment --all-namespaces
+      - run:
+          command: |
+            bats tests
