@@ -6,7 +6,7 @@ metadata:
     app: {{ template "fullname" . }}
     role: flow-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - name: flow
       port: 8081

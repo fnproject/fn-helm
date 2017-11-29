@@ -7,7 +7,7 @@ metadata:
     role: fn-service
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - name: fn
     port: {{ .Values.fn.externalPort}}
