@@ -6,7 +6,7 @@ fncli:
 
 fn:
   image: fnproject/fn-service:0.0.161
-  externalPort: 8080
+  externalPort: 80
 
 flow:
   image: fnproject/flow:0.1.67
