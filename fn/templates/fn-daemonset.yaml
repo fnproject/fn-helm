@@ -21,6 +21,9 @@ spec:
       - name: fn-service
         image: {{ .Values.fnserver.image }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+{{- end }}
         securityContext:
           privileged: true
         ports:
