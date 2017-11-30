@@ -1,3 +1,0 @@
-fn:
-  service:
-     type: ClusterIP
