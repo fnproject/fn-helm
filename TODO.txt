@@ -1,29 +1,33 @@
-* helm test for flow
-* circle install tests -
+## Chart improvements:
+- helm test for flow
+- make services configurable between service type (NodePort, LoadBalancer, ClusterIP ?)
+- expand out variables for images etc.
+
+## Components:
+- fn UI (Derek)
+- flow UI (Derek)
+- fnlb ?
+- Split flow and fn DBs
+    - use DB creation with init containers using root creds?
+- re-enable redis auth
+
+## Chart docs:
+- Notes.txt (Derek)
+- README.md (Derek - done)
+- Working example with fn (Derek)
+
+## Misc:
+- option of Running DooD?
+- Deploy to our own repo (or somewhere on fnproject.io? )
+- push-button release from circle?
+- auto-build from flow/fn/cli changes?
+
+## Done:
+- DB auth variables from chart secrets
+- helm test for fn
+- readyness checks for fn
+- readyness checks for flow
+- circle install tests
     -  create cluster (run helm tests)
-    -  create second cluster  (test)
-* make services configurable (LB?)
-* expand out variables for images etc.
-* fn UI
-* flow UI
-* fnlb ?
-* Split flow and fn DBs
-   -  use DB creation with init containers using root creds?
-* re-enable redis auth
-
-* Chart Docs:
-   Notes.txt
-   README.md
-   Working example with fn
-
-* option of Running DooD?
-* Deploy to our own repo (or somewhere on fnproject.io? )
-* push-button release from circle?
-* auto-build from flow/fn/cli changes?
-
-Done:
-* DB auth variables from chart secrets
-* helm test for fn
-* readyness checks for fn
-* readyness checks for flow
-* Install instructions (main README)
+    -  create second cluster (test)
+- Install instructions (main README)
