@@ -6,10 +6,9 @@
 * expand out variables for images etc.
 * fn UI
 * flow UI
-* Install instructions (main README)
 * fnlb ?
-* Split flow and  fn DBs
-   -  use   DB creation with init containers using root creds?  -
+* Split flow and fn DBs
+   -  use DB creation with init containers using root creds?
 * re-enable redis auth
 
 * Chart Docs:
@@ -20,10 +19,11 @@
 * option of Running DooD?
 * Deploy to our own repo (or somewhere on fnproject.io? )
 * push-button release from circle?
-* auto-build from  flow/fn/cli changes?
+* auto-build from flow/fn/cli changes?
 
 Done:
 * DB auth variables from chart secrets
 * helm test for fn
 * readyness checks for fn
 * readyness checks for flow
+* Install instructions (main README)
