@@ -15,10 +15,11 @@ spec:
         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
         heritage: {{ .Release.Service }}
         release: {{ .Release.Name }}
+        role: fn-service
     spec:
       containers:
       - name: fn-service
-        image: fnproject/fnserver:latest
+        image: {{ .Values.fnserver.image }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         securityContext:
           privileged: true
@@ -31,18 +32,18 @@ spec:
           initialDelaySeconds: 3
           periodSeconds: 3
         env:
-        - name: PORT
+        - name: FN_PORT
           value: "80"
-        - name: DB_PASSWD
+        - name: FN_DB_PASSWD
           valueFrom:
             secretKeyRef:
               name: {{ .Release.Name }}-mysql
               key: mysql-password
-        - name: DB_HOST
+        - name: FN_DB_HOST
           value: {{ .Release.Name }}-mysql
-        - name: DB_URL
-          value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
-        - name: MQ_HOST
+        - name: FN_DB_URL
+          value: mysql://fnapp:$(FN_DB_PASSWD)@tcp($(FN_DB_HOST):3306)/fndb
+        - name: FN_MQ_HOST
           value: {{ .Release.Name }}-redis
 #  TODO:
 #        - name: MQ_PASSWD
@@ -50,5 +51,5 @@ spec:
 #            secretKeyRef:
 #              name: {{ .Release.Name }}-redis
 #              key: redis-password
-        - name: MQ_URL
-          value: redis://$(MQ_HOST):6379/
+        - name: FN_MQ_URL
+          value: redis://$(FN_MQ_HOST):6379/

@@ -1,23 +1,34 @@
 # Default values for Fn
 imagePullPolicy: IfNotPresent
 
-##
-## Docker images for Fn services
-##
-fncli:
-  image: fnproject/fn:0.4.23
+fnserver:
+  image: fnproject/fnserver:0.3.209 #TAG-fnserver-image
+  logLevel: info
+  service:
+    port: 80
+    type: LoadBalancer
 
-fn:
-  image: fnproject/fn-service:0.0.161
-  externalPort: 80
 
 flow:
-  image: fnproject/flow:0.1.67
-  externalPort: 8081
+  image: fnproject/flow:0.1.71  #TAG-fnserver-image
+  logLevel: info
+  service:
+    port: 80
+    type: ClusterIP
 
 fnui:
-  image: fnproject/fn:0.4.2
-  externalPort: 4000
+  image: fnproject/ui:0.0.19  #TAG-ui-image
+  service:
+    port: 4000
+    type: LoadBalancer
+    annotations: {}
+
+flowui:
+  image: fnproject/flow:ui  #TAG-flow-ui-image
+  service:
+    port: 4001
+    type: LoadBalancer
+    annotations: {}
 
 ##
 ## MySQL chart configuration

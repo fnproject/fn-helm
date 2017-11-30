@@ -7,11 +7,16 @@ metadata:
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
+{{- if .Values.flow.service.annotations }}
+  annotations:
+{{ toYaml .Values.flow.service.annotations | indent 4 }}
+{{- end }}
 spec:
-  type: LoadBalancer
+  type: {{ .Values.flow.service.type }}
   ports:
     - name: flow
-      port: {{ .Values.flow.externalPort }}
+      port: {{ .Values.flow.service.port }}
       targetPort: 8081
   selector:
     app: {{ template "fullname" . }}
+    role: flow-service

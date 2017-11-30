@@ -1,0 +1,3 @@
+fnserver:
+  service:
+     type: ClusterIP

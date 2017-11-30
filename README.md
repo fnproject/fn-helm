@@ -34,6 +34,7 @@ Installing a chart will create a new release with an auto-generated name.
 Optionally, you can pass in the `--name` flag to use your own release name
 (e.g. `helm install --name dev fn`)
 
+
 ## Uninstalling the Fn Helm chart
 
 - Use `helm list` to see all currently deployed releases:
@@ -50,3 +51,18 @@ exegetical-frog 1               Tue Nov 28 12:31:22 2017        DEPLOYED        
 $ helm delete --purge exegetical-frog
 release "exegetical-frog" deleted
 ```
+
+
+## Configuration 
+
+|  Key                         |    Default     | Notes               | 
+| -------------------------    |  -----------   | -------             |
+| fnserver.service.type        |   LoadBalancer |  fn service  type           |
+| fnserver.service.port        |   80           |                     |
+| fnserver.service.annotations |   {}           |  annotations for fnserver service  (e.g. to configure load balancer)          |
+| flow.service.type            |   ClusterIP    |  Flow service type             |
+| flow.service.port            |   80           |                     |
+| flow.service.annotations     |   {}           |  Annotations for fn-flow  service  (e.g. to configure load balancer)          |
+| mysql.*                      |                |  See the [https://github.com/kubernetes/charts/tree/master/stable/mysql](Mysql chart docs) | 
+| redis.*                      |                |  See the [https://github.com/kubernetes/charts/tree/master/stable/redis](Redis chart docs) | 
+ 

@@ -1,0 +1,4 @@
+fnserver:
+  service:
+     annotations:
+          service.beta.kubernetes.io/oci-load-balancer-shape: 400Mbps
