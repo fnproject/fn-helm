@@ -2,7 +2,7 @@
 imagePullPolicy: IfNotPresent
 
 fnserver:
-  image: fnproject/fnserver:0.3.209 #TAG-fnserver-image
+  image: fnproject/fnserver:0.3.209  #TAG-fnserver-image
   logLevel: info
   service:
     port: 80
@@ -10,7 +10,7 @@ fnserver:
     annotations: {}
 
 fnui:
-  image: fnproject/ui:0.0.19  #TAG-ui-image
+  image: fnproject/ui:0.0.19  #TAG-fnui-image
   service:
     port: 4000
     type: LoadBalancer
@@ -18,7 +18,7 @@ fnui:
 
 
 flow:
-  image: fnproject/flow:0.1.71  #TAG-fnserver-image
+  image: fnproject/flow:0.1.71  #TAG-flow-image
   logLevel: info
   service:
     port: 80
@@ -26,7 +26,7 @@ flow:
     annotations: {}
 
 flowui:
-  image: fnproject/flow:ui  #TAG-flow-ui-image
+  image: fnproject/flow:ui #TAG-flowui-image
   service:
     port: 4001
     type: LoadBalancer
