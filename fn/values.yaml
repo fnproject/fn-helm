@@ -7,6 +7,14 @@ fnserver:
   service:
     port: 80
     type: LoadBalancer
+    annotations: {}
+
+fnui:
+  image: fnproject/ui:0.0.19  #TAG-ui-image
+  service:
+    port: 4000
+    type: LoadBalancer
+    annotations: {}
 
 
 flow:
@@ -15,12 +23,6 @@ flow:
   service:
     port: 80
     type: ClusterIP
-
-fnui:
-  image: fnproject/ui:0.0.19  #TAG-ui-image
-  service:
-    port: 4000
-    type: LoadBalancer
     annotations: {}
 
 flowui:
