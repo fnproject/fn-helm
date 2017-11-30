@@ -42,3 +42,8 @@ jobs:
       - run:
           command: |
             kubectl get all --all-namespaces
+      - run:
+          command: |
+            helm lint fn
+
+

@@ -50,3 +50,15 @@ exegetical-frog 1               Tue Nov 28 12:31:22 2017        DEPLOYED        
 $ helm delete --purge exegetical-frog
 release "exegetical-frog" deleted
 ```
+
+
+## Configuration 
+
+|  Key                        |    Default      | Notes               | 
+| -------------------------    |  -----------   | -------             |
+| fnserver.service.port        |   80           |                     |
+| fnserver.service.type        |   LoadBalancer |  fn service load balancer type           |
+| fnserver.service.annotations |   {}           |  annotations for fn service          |
+| mysql.*                      |                | See the [https://github.com/kubernetes/charts/tree/master/stable/mysql](Mysql chart docs) | 
+| redis.*                      |                | See the [https://github.com/kubernetes/charts/tree/master/stable/redis](Redis chart docs) | 
+ 

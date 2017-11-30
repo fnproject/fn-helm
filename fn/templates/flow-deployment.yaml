@@ -16,10 +16,11 @@ spec:
          chart: {{ .Chart.Name }}-{{ .Chart.Version }}
          heritage: {{ .Release.Service }}
          release: {{ .Release.Name }}
+         role: flow-service
     spec:
       containers:
         - name: flow
-          image: fnproject/flow:latest
+          image: {{ .Values.flow.image }}
           ports:
             - containerPort: 8081
           readinessProbe:

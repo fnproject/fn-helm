@@ -8,10 +8,11 @@ metadata:
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: flow
-      port: {{ .Values.flow.externalPort }}
+      port: 80
       targetPort: 8081
   selector:
     app: {{ template "fullname" . }}
+    role: flow-service

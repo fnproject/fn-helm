@@ -7,9 +7,9 @@ metadata:
 spec:
   containers:
   - name: {{ .Release.Name }}-fn-api-available
-    image: fnproject/fn:latest
+    image: {{ .Values.fncli.image }}
     env:
-      - name: API_URL
+      - name: FN_API_URL
         value: http://{{ template "fullname" . }}-api
     command: ["/app/fn", "apps", "list"]
   restartPolicy: Never
