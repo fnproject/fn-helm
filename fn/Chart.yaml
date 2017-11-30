@@ -14,6 +14,8 @@ sources:
 - https://github.com/fnproject/fn
 - https://github.com/fnproject/flow
 maintainers:
-#TODO
-- name: fnproject
+- name: Derek Schultz
+  email: derek.schultz@oracle.com
+- name: Owen Cliffe
+  email: owen.cliffe@oracle.com
 engine: gotpl
