@@ -42,4 +42,3 @@ spec:
             value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
           - name: API_URL
             value: http://{{ template "fullname" . }}-api
-
