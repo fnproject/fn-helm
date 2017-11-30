@@ -4,14 +4,18 @@ metadata:
   name: {{ template "fullname" . }}-flow-depl
   labels:
     app: {{ template "fullname" . }}
-    role: flow-depl
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
 spec:
   replicas: 1
   template:
     metadata:
        labels:
          app: {{ template "fullname" . }}
-         role: flow-server
+         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+         heritage: {{ .Release.Service }}
+         release: {{ .Release.Name }}
     spec:
       containers:
         - name: flow
@@ -37,5 +41,5 @@ spec:
           - name: DB_URL
             value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
           - name: API_URL
-            value: http://{{ template "fullname" . }}-api:8080
+            value: http://{{ template "fullname" . }}-api
 

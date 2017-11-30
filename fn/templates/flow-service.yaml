@@ -4,13 +4,14 @@ metadata:
   name: {{ template "fullname" . }}-flow
   labels:
     app: {{ template "fullname" . }}
-    role: flow-svc
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
 spec:
   type: LoadBalancer
   ports:
     - name: flow
-      port: 8081
+      port: {{ .Values.flow.externalPort }}
       targetPort: 8081
   selector:
     app: {{ template "fullname" . }}
-    role: flow-server

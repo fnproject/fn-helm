@@ -12,12 +12,14 @@ spec:
     metadata:
       labels:
         app: {{ template "fullname" . }}
-        role: fn-node
+        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
     spec:
       containers:
       - name: fn-service
         image: fnproject/fnserver:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
         securityContext:
           privileged: true
         ports:

@@ -4,8 +4,9 @@ metadata:
   name: {{ template "fullname" . }}-api
   labels:
     app: {{ template "fullname" . }}
-    role: fn-service
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
 spec:
   type: LoadBalancer
   ports:
@@ -14,4 +15,3 @@ spec:
     targetPort: 80
   selector:
     app: {{ template "fullname" . }}
-    role: fn-node
