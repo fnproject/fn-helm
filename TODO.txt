@@ -1,13 +1,12 @@
 ## Chart improvements:
-- helm test for flow
-- make services configurable between service type (NodePort, LoadBalancer, ClusterIP ?)
-- expand out variables for images etc.
+- make services configurable between service type (NodePort, LoadBalancer, ClusterIP ?) (done)
+- expand out variables for images etc. (Done)
 
 ## Components:
 - fn UI (Derek)
 - flow UI (Derek)
-- fnlb ?
-- Split flow and fn DBs
+- fnlb?  - https://github.com/fnproject/fn/issues/553
+- Split flow and fn DBs ?
     - use DB creation with init containers using root creds?
 - re-enable redis auth
 

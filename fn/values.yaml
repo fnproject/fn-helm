@@ -1,15 +1,9 @@
 # Default values for Fn
 imagePullPolicy: IfNotPresent
 
-##
-## Docker images for Fn services
-##
-fncli:
-  image: fnproject/fn:0.4.24   #TAG-fn-image
-
-
 fnserver:
   image: fnproject/fnserver:0.3.209 #TAG-fnserver-image
+  logLevel: info
   service:
     port: 80
     type: LoadBalancer
@@ -17,6 +11,10 @@ fnserver:
 
 flow:
   image: fnproject/flow:0.1.71  #TAG-fnserver-image
+  logLevel: info
+  service:
+    port: 80
+    type: ClusterIP
 
 fnui:
   image: fnproject/ui:0.0.19  #TAG-ui-image
@@ -25,12 +23,11 @@ fnui:
     type: LoadBalancer
     annotations: {}
 
-
 flowui:
   image: fnproject/flow:ui  #TAG-flow-ui-image
   service:
     port: 4001
-    type: ClusterIP
+    type: LoadBalancer
     annotations: {}
 
 ##
