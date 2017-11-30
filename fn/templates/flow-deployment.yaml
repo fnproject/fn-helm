@@ -24,7 +24,6 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
-{{- end }}
           ports:
             - containerPort: 8081
           readinessProbe:
