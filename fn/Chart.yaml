@@ -7,6 +7,7 @@ keywords:
 - fn
 - containers
 - functions
+- serverless
 home: http://fnproject.io/
 icon: http://fnproject.io/images/fn-300x125.png
 sources:
