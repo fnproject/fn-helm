@@ -18,7 +18,7 @@ spec:
          chart: {{ .Chart.Name }}-{{ .Chart.Version }}
          heritage: {{ .Release.Service }}
          release: {{ .Release.Name }}
-         role: fnui
+         role: ui
     spec:
       containers:
         - name: fn-ui
@@ -45,4 +45,5 @@ spec:
               value: http://{{ template "fullname" . }}-api
             - name: COMPLETER_BASE_URL
               value: http://{{ template "fullname" . }}-flow
-{{- end}}
+
+{{- end}} # if .Values.ui.enabled
