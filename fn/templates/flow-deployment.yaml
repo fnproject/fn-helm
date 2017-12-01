@@ -46,3 +46,13 @@ spec:
             value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
           - name: API_URL
             value: http://{{ template "fullname" . }}-api
+        - name: flow-ui
+          image: {{ .Values.flowui.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.flowui.service.port }}
+          env:
+            - name: API_URL
+              value: http://{{ template "fullname" . }}-api
+            - name: COMPLETER_BASE_URL
+              value: http://{{ template "fullname" . }}-flow:8081

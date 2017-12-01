@@ -17,6 +17,9 @@ spec:
     - name: flow
       port: {{ .Values.flow.service.port }}
       targetPort: 8081
+    - name: flowui
+      port: {{ .Values.flowui.service.port }}
+      targetPort: 3000
   selector:
     app: {{ template "fullname" . }}
     role: flow-service
