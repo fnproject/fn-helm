@@ -46,13 +46,37 @@ spec:
             value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
           - name: API_URL
             value: http://{{ template "fullname" . }}-api
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-flowui
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+       labels:
+         app: {{ template "fullname" . }}
+         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+         heritage: {{ .Release.Service }}
+         release: {{ .Release.Name }}
+         role: fn-service
+    spec:
+      containers:
         - name: flow-ui
           image: {{ .Values.flowui.image }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
           ports:
-            - containerPort: {{ .Values.flowui.service.port }}
+            - containerPort: 3000
           env:
             - name: API_URL
               value: http://{{ template "fullname" . }}-api
             - name: COMPLETER_BASE_URL
-              value: http://{{ template "fullname" . }}-flow:8081
+              value: http://{{ template "fullname" . }}-flow

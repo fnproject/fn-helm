@@ -28,7 +28,7 @@ flow:
 flowui:
   image: fnproject/flow:ui #TAG-flowui-image
   service:
-    port: 4001
+    port: 3000
     type: LoadBalancer
     annotations: {}
 

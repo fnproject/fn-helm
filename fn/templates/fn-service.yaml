@@ -17,6 +17,9 @@ spec:
   - name: fn
     port: {{ .Values.fnserver.service.port }}
     targetPort: 80
+  - name: fn-ui
+    port: {{ .Values.fnui.service.port}}
+    targetPort: 4000
   selector:
     app: {{ template "fullname" . }}
     role: fn-service

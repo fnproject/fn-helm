@@ -3,8 +3,8 @@
 - expand out variables for images etc. (Done)
 
 ## Components:
-- fn UI (Derek)
-- flow UI (Derek)
+- fn UI (Derek - done)
+- flow UI (Derek - in progress)
 - fnlb?  - https://github.com/fnproject/fn/issues/553
 - Split flow and fn DBs ?
     - use DB creation with init containers using root creds?
