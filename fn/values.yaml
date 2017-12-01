@@ -9,28 +9,26 @@ fnserver:
     type: LoadBalancer
     annotations: {}
 
-fnui:
-  image: fnproject/ui:0.0.19  #TAG-fnui-image
+ui:
+  enabled: true
+  fnui:
+    image: fnproject/ui:0.0.19  #TAG-fnui-image
+  flowui:
+    image: fnproject/flow:ui #TAG-flowui-image
   service:
-    port: 4000
+    flowuiPort: 3000
+    fnuiPort: 4000
     type: LoadBalancer
     annotations: {}
 
-
 flow:
-  image: fnproject/flow:0.1.71  #TAG-flow-image
+  image: fnproject/flow:0.1.73  #TAG-flow-image
   logLevel: info
   service:
     port: 80
     type: ClusterIP
     annotations: {}
 
-flowui:
-  image: fnproject/flow:ui #TAG-flowui-image
-  service:
-    port: 3000
-    type: LoadBalancer
-    annotations: {}
 
 ##
 ## MySQL chart configuration

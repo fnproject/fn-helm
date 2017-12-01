@@ -1,7 +1,9 @@
+{{- if .Values.ui.enabled }}
+
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}-flow-depl
+  name: {{ template "fullname" . }}-ui
   labels:
     app: {{ template "fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -16,33 +18,31 @@ spec:
          chart: {{ .Chart.Name }}-{{ .Chart.Version }}
          heritage: {{ .Release.Service }}
          release: {{ .Release.Name }}
-         role: flow-service
+         role: fnui
     spec:
       containers:
-        - name: flow
-          image: {{ .Values.flow.image }}
+        - name: fn-ui
+          image: {{ .Values.ui.fnui.image }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           ports:
-            - containerPort: 8081
-          readinessProbe:
-            httpGet:
-              path: /ping
-              port: 8081
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            - containerPort: 4000
           env:
-          - name: LISTEN
-            value: :8081
-          - name: DB_PASSWD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-mysql
-                key: mysql-password
-          - name: DB_HOST
-            value: {{ .Release.Name }}-mysql
-          - name: DB_URL
-            value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
+          - name: FN_PORT
+            value: "4000"
           - name: API_URL
             value: http://{{ template "fullname" . }}-api
+        - name: flow-ui
+          image: {{ .Values.ui.flowui.image }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: API_URL
+              value: http://{{ template "fullname" . }}-api
+            - name: COMPLETER_BASE_URL
+              value: http://{{ template "fullname" . }}-flow
+{{- end}}

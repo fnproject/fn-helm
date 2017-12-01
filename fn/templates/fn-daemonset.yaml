@@ -55,37 +55,4 @@ spec:
 #              key: redis-password
         - name: FN_MQ_URL
           value: redis://$(FN_MQ_HOST):6379/
----
-apiVersion: apps/v1beta1
-kind: Deployment
-metadata:
-  name: {{ template "fullname" . }}-fnui
-  labels:
-    app: {{ template "fullname" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
-spec:
-  replicas: 1
-  template:
-    metadata:
-       labels:
-         app: {{ template "fullname" . }}
-         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-         heritage: {{ .Release.Service }}
-         release: {{ .Release.Name }}
-         role: fn-service
-    spec:
-      containers:
-        - name: fn-ui
-          image: {{ .Values.fnui.image }}
-          imagePullPolicy: {{ .Values.imagePullPolicy }}
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
-          ports:
-            - containerPort: 4000
-          env:
-          - name: FN_PORT
-            value: "4000"
-          - name: API_URL
-            value: http://{{ template "fullname" . }}-api
+

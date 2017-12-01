@@ -20,26 +20,3 @@ spec:
   selector:
     app: {{ template "fullname" . }}
     role: flow-service
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ template "fullname" . }}-flow-ui
-  labels:
-    app: {{ template "fullname" . }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-    heritage: {{ .Release.Service }}
-    release: {{ .Release.Name }}
-{{- if .Values.flow.service.annotations }}
-  annotations:
-{{ toYaml .Values.flow.service.annotations | indent 4 }}
-{{- end }}
-spec:
-  type: {{ .Values.flowui.service.type }}
-  ports:
-    - name: flow-ui
-      port: {{ .Values.flowui.service.port }}
-      targetPort: 3000
-  selector:
-    app: {{ template "fullname" . }}
-    role: flow-service
