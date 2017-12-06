@@ -1,0 +1,7 @@
+fnserver:
+  service:
+     type: ClusterIP
+
+ui:
+  service:
+    type: ClusterIP

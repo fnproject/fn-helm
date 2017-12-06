@@ -1,0 +1,83 @@
+# Default values for Fn
+imagePullPolicy: IfNotPresent
+
+fnserver:
+  image: fnproject/fnserver:0.3.209  #TAG-fnserver-image
+  logLevel: info
+  service:
+    port: 80
+    type: LoadBalancer
+    annotations: {}
+  ## Configure resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+
+
+ui:
+  enabled: true
+  fnui:
+    image: fnproject/ui:0.0.19  #TAG-fnui-image
+    resources: {}
+  flowui:
+    image: fnproject/flow:ui #TAG-flowui-image
+    resources: {}
+  service:
+    flowuiPort: 3000
+    fnuiPort: 4000
+    type: LoadBalancer
+    annotations: {}
+
+
+flow:
+  image: fnproject/flow:0.1.73  #TAG-flow-image
+  logLevel: info
+  service:
+    port: 80
+    type: ClusterIP
+    annotations: {}
+  ## Configure resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources: {}
+
+
+##
+## MySQL chart configuration
+##
+mysql:
+  persistence:
+    enabled: false
+    nodeSelector: mysql-storage
+    ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
+    ## Default: volume.alpha.kubernetes.io/storage-class: default
+    ##
+    # storageClass:
+    storageClass: mysql
+    accessMode: ReadWriteOnce
+    size: 8Gi
+
+  mysqlDatabase: fndb
+  mysqlUser: fnapp
+  mysqlPassword: boomsauce
+
+##
+## Redis chart configuration
+##
+redis:
+  persistence:
+    enabled: false
+    nodeSelector: redis-storage
+    storageClass: redis
+    accessMode: ReadWriteOnce
+    size: 8Gi
+  usePassword: true
+  redisPassword:
+
+## Ingress configuration.
+## ref: https://kubernetes.io/docs/user-guide/ingress/
+##
+ingress:
+  enabled: false

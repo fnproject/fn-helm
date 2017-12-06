@@ -1,0 +1,15 @@
+version: 2
+
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          command: |
+            curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
+      - run:
+          command: |
+            helm lint --strict  fn
+
+

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-api
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+{{- if .Values.fnserver.service.annotations }}
+  annotations:
+{{ toYaml .Values.fnserver.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.fnserver.service.type }}
+  ports:
+  - name: fn
+    port: {{ .Values.fnserver.service.port }}
+    targetPort: 80
+  selector:
+    app: {{ template "fullname" . }}
+    role: fn-service

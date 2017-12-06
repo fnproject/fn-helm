@@ -1,0 +1,4 @@
+fn/charts
+*.tgz
+.idea
+*.iml

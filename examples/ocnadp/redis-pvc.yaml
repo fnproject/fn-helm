@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: tc-fn-redis
+spec:
+  storageClassName: "oci"
+  selector:
+    matchLabels:
+      oci-availability-domain: "US-ASHBURN-AD-1"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi

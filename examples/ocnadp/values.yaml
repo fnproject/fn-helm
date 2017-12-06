@@ -1,0 +1,18 @@
+fnserver:
+  service:
+     annotations:
+          service.beta.kubernetes.io/oci-load-balancer-shape: 400Mbps
+ui:
+  service:
+     annotations:
+          service.beta.kubernetes.io/oci-load-balancer-shape: 400Mbps
+
+mysql:
+   persistence:
+      enabled: true
+      existingClaim: tc-fn-mysql
+
+redis:
+   persistence:
+      enabled: true
+      existingClaim: tc-fn-redis
