@@ -1,16 +1,18 @@
 # Default values for Fn
 imagePullPolicy: IfNotPresent
 
-fnserver:
-  image: fnproject/fnserver:0.3.209  #TAG-fnserver-image
-  logLevel: info
+fn:
   service:
     port: 80
     type: LoadBalancer
     annotations: {}
-  ## Configure resource requests and limits
-  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-  ##
+
+fnlb:
+  image: fnproject/fnlb:0.0.189
+
+fnserver:
+  image: fnproject/fnserver:0.3.227  #TAG-fnserver-image
+  logLevel: info
   resources: {}
   nodeSelector: {}
   tolerations: []
@@ -19,7 +21,7 @@ fnserver:
 ui:
   enabled: true
   fnui:
-    image: fnproject/ui:0.0.19  #TAG-fnui-image
+    image: fnproject/ui:0.0.21  #TAG-fnui-image
     resources: {}
   flowui:
     image: fnproject/flow:ui #TAG-flowui-image
@@ -32,15 +34,12 @@ ui:
 
 
 flow:
-  image: fnproject/flow:0.1.73  #TAG-flow-image
+  image: fnproject/flow:0.1.75  #TAG-flow-image
   logLevel: info
   service:
     port: 80
     type: ClusterIP
     annotations: {}
-  ## Configure resource requests and limits
-  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-  ##
   resources: {}
 
 
