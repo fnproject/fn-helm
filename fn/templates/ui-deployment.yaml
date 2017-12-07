@@ -31,7 +31,7 @@ spec:
           env:
           - name: FN_PORT
             value: "4000"
-          - name: API_URL
+          - name: FN_API_URL
             value: http://{{ template "fullname" . }}-api
         - name: flow-ui
           image: {{ .Values.ui.flowui.image }}
