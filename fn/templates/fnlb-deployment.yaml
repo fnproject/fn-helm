@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}-flow-depl
+  name: {{ template "fullname" . }}-fnlb-depl
   labels:
     app: {{ template "fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -16,35 +16,31 @@ spec:
          chart: {{ .Chart.Name }}-{{ .Chart.Version }}
          heritage: {{ .Release.Service }}
          release: {{ .Release.Name }}
-         role: flow-service
+         role: fn-lb
     spec:
       containers:
-        - name: flow
-          image: {{ .Values.flow.image }}
+        - name: fnlb
+          image: {{ .Values.fnlb.image }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources:
-{{ toYaml .Values.flow.resources | indent 12 }}
+{{ toYaml .Values.fnlb.resources | indent 12 }}
           ports:
             - containerPort: 8081
+            - containerPort: 8082
           readinessProbe:
             httpGet:
-              path: /ping
-              port: 8081
+              path: /1/lb/dash
+              port: 8082
             initialDelaySeconds: 3
             periodSeconds: 3
           env:
           - name: LOG_LEVEL
-            value: {{ .Values.fnserver.logLevel }}
-          - name: LISTEN
-            value: :8081
-          - name: DB_PASSWD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-mysql
-                key: mysql-password
-          - name: DB_HOST
-            value: {{ .Release.Name }}-mysql
-          - name: DB_URL
-            value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
+            value: {{ .Values.fnlb.logLevel }}
           - name: API_URL
             value: http://{{ template "fullname" . }}-api
+          args:
+          - "-db=k8s"
+          - "-label-selector=app={{ template "fullname" . }},role=fn-service"
+          - "-listen=:8081"
+          - "-mgmt-listen=:8082"
+          - "-target-port=80"
