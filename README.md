@@ -67,7 +67,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `ui.enabled`                   | Enable UI components              | `true`                |
 | `ui.service.flowuiPort`        | Fn Flow UI port for ui service    | `3000`                |
 | `ui.service.fnuiPort`          | Fn UI port for ui service         | `4000`                |
-| `ui.service.type.fnuiPort`     | UI Service type                   | `LoadBalancer`        |
+| `ui.service.type`              | UI Service type                   | `LoadBalancer`        |
 | `mysql.*`                      | See the [MySQL chart docs](https://github.com/kubernetes/charts/tree/master/stable/mysql) | |
 | `redis.*`                      | See the [Redis chart docs](https://github.com/kubernetes/charts/tree/master/stable/redis) | |
  
