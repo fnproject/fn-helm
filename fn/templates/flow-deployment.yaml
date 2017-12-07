@@ -34,7 +34,7 @@ spec:
             periodSeconds: 3
           env:
           - name: LOG_LEVEL
-            value: {{ .Values.fnserver.logLevel }}
+            value: {{ .Values.flow.logLevel }}
           - name: LISTEN
             value: :8081
           - name: DB_PASSWD
