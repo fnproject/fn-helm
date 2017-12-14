@@ -46,5 +46,11 @@ spec:
             value: {{ .Release.Name }}-mysql
           - name: DB_URL
             value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
+          {{- if .Values.fnserver.hybridDeployment }}
+          - name: API_URL
+            value: http://{{ template "fullname" . }}-runner
+{{- end }}
+          {{- if not .Values.fnserver.hybridDeployment }}
           - name: API_URL
             value: http://{{ template "fullname" . }}-api
+{{- end }}

@@ -1,0 +1,24 @@
+{{- if .Values.fnserver.hybridDeployment }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-runner
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+{{- if .Values.fn.service.annotations }}
+  annotations:
+{{ toYaml .Values.fn.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.fn.service.type }}
+  ports:
+  - name: fn
+    port: {{ .Values.fn.service.port }}
+    targetPort: 8081
+  selector:
+    app: {{ template "fullname" . }}
+    role: fn-lb
+{{- end }}

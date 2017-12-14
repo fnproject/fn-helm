@@ -16,6 +16,7 @@ fnserver:
   resources: {}
   nodeSelector: {}
   tolerations: []
+  hybridDeployment: false
 
 
 ui:
