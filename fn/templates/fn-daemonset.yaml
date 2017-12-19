@@ -42,10 +42,6 @@ spec:
           initialDelaySeconds: 3
           periodSeconds: 3
         env:
-        {{- if .Values.fnserver.hybridDeployment }}
-        - name: FN_NODE_TYPE
-          value: api
-{{- end }}
         - name: LOG_LEVEL
           value: {{ .Values.fnserver.logLevel }}
         - name: FN_PORT

@@ -40,12 +40,7 @@ spec:
             value: http://{{ template "fullname" . }}-api
           args:
           - "-db=k8s"
-          {{- if .Values.fnserver.hybridDeployment }}
-          - "-label-selector=app={{ template "fullname" . }},role=fn-runner"
-{{- end}}
-          {{- if not .Values.fnserver.hybridDeployment }}
           - "-label-selector=app={{ template "fullname" . }},role=fn-service"
-{{- end}}
           - "-listen=:8081"
           - "-mgmt-listen=:8082"
           - "-target-port=80"
