@@ -1,0 +1,26 @@
+name: fn-workplane
+version: 0.1.0
+appVersion: 0.0.161
+description: Work Plane portion of the open source container native Functions as a Service (FaaS) platform
+keywords:
+- faas
+- fn
+- containers
+- functions
+- serverless
+- workplane
+home: http://fnproject.io/
+icon: http://fnproject.io/images/fn-300x125.png
+sources:
+- https://github.com/fnproject/fn
+- https://github.com/fnproject/ui
+- https://github.com/fnproject/flow
+- https://github.com/fnproject/flowui
+maintainers:
+- name: Derek Schultz
+  email: derek.schultz@oracle.com
+- name: Owen Cliffe
+  email: owen.cliffe@oracle.com
+- name: Dario Domizioli
+  email: dario.domizioli@oracle.com
+engine: gotpl

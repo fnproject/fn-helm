@@ -11,5 +11,5 @@ jobs:
       - run:
           command: |
             helm lint --strict  fn
-
-
+            helm lint --strict  fn-controlplane
+            helm lint --strict  fn-workplane

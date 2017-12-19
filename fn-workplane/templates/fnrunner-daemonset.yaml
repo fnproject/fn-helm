@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: {{ template "fullname" . }}-runner
+spec:
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+        role: fn-runner
+    spec:
+      {{- if .Values.fnserver.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.fnserver.nodeSelector | indent 8 }}
+{{- end }}
+      {{- if .Values.fnserver.tolerations }}
+      tolerations:
+{{ toYaml .Values.fnserver.tolerations | indent 8 }}
+{{- end }}
+      containers:
+      - name: fn-runner
+        image: {{ .Values.fnserver.image }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        resources:
+{{ toYaml .Values.fnserver.resources | indent 12 }}
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /v1/apps
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        env:
+        - name: FN_NODE_TYPE
+          value: runner
+        - name: FN_RUNNER_API_URL
+          value: {{ .Values.fn.controlPlaneEndpoint }}
+        - name: LOG_LEVEL
+          value: {{ .Values.fnserver.logLevel }}
+        - name: FN_PORT
+          value: "80"
