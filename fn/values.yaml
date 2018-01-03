@@ -72,8 +72,7 @@ redis:
     storageClass: redis
     accessMode: ReadWriteOnce
     size: 8Gi
-  usePassword: true
-  redisPassword:
+  usePassword: false
 
 ## Ingress configuration.
 ## ref: https://kubernetes.io/docs/user-guide/ingress/
