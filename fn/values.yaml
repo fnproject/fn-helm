@@ -8,10 +8,10 @@ fn:
     annotations: {}
 
 fnlb:
-  image: fnproject/fnlb:0.0.189
+  image: fnproject/fnlb:latest
 
 fnserver:
-  image: fnproject/fnserver:0.3.227  #TAG-fnserver-image
+  image: fnproject/fnserver:latest
   logLevel: info
   resources: {}
   nodeSelector: {}
@@ -21,10 +21,10 @@ fnserver:
 ui:
   enabled: true
   fnui:
-    image: fnproject/ui:0.0.21  #TAG-fnui-image
+    image: fnproject/ui:latest
     resources: {}
   flowui:
-    image: fnproject/flow:ui #TAG-flowui-image
+    image: fnproject/flow:ui
     resources: {}
   service:
     flowuiPort: 3000
@@ -34,7 +34,7 @@ ui:
 
 
 flow:
-  image: fnproject/flow:0.1.75  #TAG-flow-image
+  image: fnproject/flow:latest
   logLevel: info
   service:
     port: 80
