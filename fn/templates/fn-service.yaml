@@ -14,15 +14,21 @@ metadata:
 spec:
   type: {{ .Values.fn.service.type }}
   ports:
+  {{- if .Values.fnserver.splitWorkers }}
+  # In a split workers scenario this service targets the api nodes only and directly.
+  - name: fn
+    port: {{ .Values.fn.service.port }}
+    targetPort: 80
+  selector:
+    app: {{ template "fullname" . }}
+    role: fn-service
+  {{- else }}
+  # In the normal scenario this service goes through the fnlb.
   - name: fn
     port: {{ .Values.fn.service.port }}
     targetPort: 8081
   selector:
     app: {{ template "fullname" . }}
-    {{- if .Values.fnserver.splitWorkers }}
-    # In a split workers scenario this service targets the api nodes only.
-    role: fn-service
-    {{- else }}
     role: fn-lb
 {{- end }}
 
@@ -44,12 +50,12 @@ metadata:
 {{- end }}
 spec:
   type: {{ .Values.fn.service.type }}
+  # Calls to the runners always go through the fnlb.
   ports:
   - name: fn
     port: {{ .Values.fn.service.port }}
     targetPort: 8081
   selector:
     app: {{ template "fullname" . }}
-    # Calls to the runners always go through the fnlb.
     role: fn-lb
 {{- end }}

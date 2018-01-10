@@ -2,7 +2,7 @@ The Fn service API can be accessed within your cluster at:
 
  - http://{{template  "fullname" .}}-api.{{ .Release.Namespace }}:{{ .Values.fn.service.port}}
 
-Set the FN_API_URL environment variable to this address to use the Fn service from outside the cluster:
+Set these environment variables to use the Fn service from outside the cluster:
 
 {{- if contains "NodePort" .Values.fn.service.type }}
 
@@ -32,6 +32,12 @@ Then set
     export FN_API_URL=http://$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }}-api -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn.service.port }}
 
 {{- if .Values.fnserver.splitWorkers }}
+Similarly, you can watch for the EXTERNAL-IP of the runner URL:
+
+  kubectl get svc --namespace {{ .Release.Namespace }} -w {{ template "fullname" . }}-runner
+
+Then set
+
     export FN_RUNNER_URL=http://$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }}-runner -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn.service.port }}
 
 App/function routes are reachable under $FN_RUNNER_URL/r/
