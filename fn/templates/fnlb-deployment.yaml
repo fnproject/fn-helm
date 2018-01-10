@@ -40,8 +40,8 @@ spec:
             value: http://{{ template "fullname" . }}-api
           args:
           - "-db=k8s"
-          # In a split workers scenario the fnlb only deals with calls to the workers.
           {{- if .Values.fnserver.splitWorkers }}
+          # In a split workers scenario the fnlb only deals with calls to the workers.
           - "-label-selector=app={{ template "fullname" . }},role=fn-runner"
           {{- else }}
           - "-label-selector=app={{ template "fullname" . }},role=fn-service"

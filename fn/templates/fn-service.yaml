@@ -19,9 +19,8 @@ spec:
     targetPort: 8081
   selector:
     app: {{ template "fullname" . }}
-    # In a split workers scenario this service targets the api nodes only.
-    # Otherwise, we go through the fnlb because everything goes through here.
     {{- if .Values.fnserver.splitWorkers }}
+    # In a split workers scenario this service targets the api nodes only.
     role: fn-service
     {{- else }}
     role: fn-lb
