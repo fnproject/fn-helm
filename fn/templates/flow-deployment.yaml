@@ -46,5 +46,12 @@ spec:
             value: {{ .Release.Name }}-mysql
           - name: DB_URL
             value: mysql://fnapp:$(DB_PASSWD)@tcp($(DB_HOST):3306)/fndb
+          # In a split workers scenario we use the runner service directly.
+          # Otherwise we can use the api service which will go through the fnlb anyway.
+          {{- if .Values.fnserver.splitWorkers }}
+          - name: API_URL
+            value: http://{{ template "fullname" . }}-runner
+          {{- else }}
           - name: API_URL
             value: http://{{ template "fullname" . }}-api
+{{- end }}

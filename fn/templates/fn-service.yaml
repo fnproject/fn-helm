@@ -19,4 +19,38 @@ spec:
     targetPort: 8081
   selector:
     app: {{ template "fullname" . }}
+    # In a split workers scenario this service targets the api nodes only.
+    # Otherwise, we go through the fnlb because everything goes through here.
+    {{- if .Values.fnserver.splitWorkers }}
+    role: fn-service
+    {{- else }}
     role: fn-lb
+{{- end }}
+
+{{- if .Values.fnserver.splitWorkers }}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-runner
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+{{- if .Values.fn.service.annotations }}
+  annotations:
+{{ toYaml .Values.fn.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.fn.service.type }}
+  ports:
+  - name: fn
+    port: {{ .Values.fn.service.port }}
+    targetPort: 8081
+  selector:
+    app: {{ template "fullname" . }}
+    # Calls to the runners always go through the fnlb.
+    role: fn-lb
+{{- end }}

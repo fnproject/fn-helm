@@ -1,3 +1,4 @@
+{{- if not .Values.fn.service.splitWorkers }}
 The Fn service can be accessed within your cluster at:
 
  - http://{{template  "fullname" .}}-api.{{ .Release.Namespace }}:{{ .Values.fn.service.port}}
@@ -28,6 +29,49 @@ Then set
     export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "fullname" . }},role=fn-service" -o jsonpath="{.items[0].metadata.name}")
     kubectl port-forward --namespace {{ .Release.Namespace }} $POD_NAME 8080:80 &
     export FN_API_URL=http://127.0.0.1:8080
+{{- end }}
+
+{{- else if .Values.fn.service.splitWorkers }}
+The Fn service API and runners can be accessed within your cluster at:
+
+ - http://{{template  "fullname" .}}-api.{{ .Release.Namespace }}:{{ .Values.fn.service.port}}
+ - http://{{template  "fullname" .}}-runner.{{ .Release.Namespace }}:{{ .Values.fn.service.port}}
+
+Set these environment variables to use the Fn service from outside the cluster:
+
+{{- if contains "NodePort" .Values.fn.service.type }}
+
+    export FN_API_NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ template "fullname" . }}-api)
+    export FN_API_NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+    export FN_RUNNER_NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ template "fullname" . }}-runner)
+    export FN_RUNNER_NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+
+    export FN_API_URL=http://$FN_API_NODE_IP:$FN_API_NODE_PORT
+    export FN_RUNNER_URL=http://$FN_RUNNER_NODE_IP:$FN_RUNNER_NODE_PORT
+
+{{- else if contains "LoadBalancer" .Values.fn.service.type }}
+
+!! NOTE: It may take a few minutes for the API load balancer to become available.
+
+You can watch for EXTERNAL-IP to populate by running:
+
+  kubectl get svc --namespace {{ .Release.Namespace }} -w {{ template "fullname" . }}-api
+  kubectl get svc --namespace {{ .Release.Namespace }} -w {{ template "fullname" . }}-runner
+
+Then set
+
+    export FN_API_URL=http://$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }}-api -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn.service.port }}
+    export FN_RUNNER_URL=http://$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }}-runner -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn.service.port }}
+
+{{- else if contains "ClusterIP" .Values.fn.service.type }}
+
+    export FN_API_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "fullname" . }},role=fn-service" -o jsonpath="{.items[0].metadata.name}")
+    kubectl port-forward --namespace {{ .Release.Namespace }} $FN_API_POD_NAME 8080:80 &
+    export FN_RUNNER_POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "fullname" . }},role=fn-runner" -o jsonpath="{.items[0].metadata.name}")
+    kubectl port-forward --namespace {{ .Release.Namespace }} $FN_API_POD_NAME 8081:80 &
+    export FN_RUNNER_URL=http://127.0.0.1:8081
+{{- end }}
+
 {{- end }}
 
 
