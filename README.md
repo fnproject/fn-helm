@@ -57,8 +57,8 @@ The command removes all the Kubernetes components associated with the chart and 
 | -------------------------------|-----------------------------------|-----------------------|
 | `fn.service.type`        | ClusterIP, NodePort, LoadBalancer | `LoadBalancer`        |
 | `fn.service.port`        | Fn service port                   | `80`                  |
-| `fn.service.splitWorkers` | Whether to split worker/api nodes | `false`               |
 | `fn.service.annotations` | Fn Service annotations            | `{}`                  |
+| `fnserver.splitWorkers`  | Whether to split worker/api nodes | `false`               |
 | `fnserver.resources`           | Per-node resource requests, see [Kubernetes Pod Resources](http://kubernetes.io/docs/user-guide/compute-resources/)            | `{}`                  |
 | `fnserver.nodeSelector`        | Fn node selectors, see [Kubernetes Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`                  |
 | `fnserver.tolerations`         | Node taint tolerations, see [Kubernetes Taints and Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`             |

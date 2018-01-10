@@ -32,6 +32,7 @@ Then set
     export FN_API_URL=http://$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }}-api -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn.service.port }}
 
 {{- if .Values.fnserver.splitWorkers }}
+
 Similarly, you can watch for the EXTERNAL-IP of the runner URL:
 
   kubectl get svc --namespace {{ .Release.Namespace }} -w {{ template "fullname" . }}-runner
