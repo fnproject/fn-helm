@@ -1,0 +1,8 @@
+{{- if .Values.mysql_operator.enabled -}}
+
+apiVersion: mysql.oracle.com/v1
+kind: MySQLCluster
+metadata:
+  name: {{ .Release.Name }}-mysql
+
+{{ end -}}

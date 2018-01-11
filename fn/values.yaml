@@ -47,6 +47,7 @@ flow:
 ## MySQL chart configuration
 ##
 mysql:
+  enabled: true
   persistence:
     enabled: false
     nodeSelector: mysql-storage
@@ -61,6 +62,16 @@ mysql:
   mysqlDatabase: fndb
   mysqlUser: fnapp
   mysqlPassword: boomsauce
+
+# The kind of installation: using the standard mysql images,
+# or the mysql-operator
+mysql_operator:
+  enabled: false
+
+  # For the moment, the database settings are taken from the mysql stanza above:
+  # mysqlDatabase
+  # mysqlUser
+  # mysqlPassword
 
 ##
 ## Redis chart configuration
