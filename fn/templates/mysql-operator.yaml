@@ -20,15 +20,18 @@ spec:
   backupTemplate:
     clusterRef:
       name: {{ .Release.Name }}-mysql
-    databases:
-      - fndb
-    provider: s3
-    config:
-      endpoint: {{ .Values.mysql_operator.backup.endpoint }}
-      region: {{ .Values.mysql_operator.backup.region }}
-      bucket: {{ .Values.mysql_operator.backup.bucket }}
-    secretRef:
-      name: {{ .Release.Name }}-mysql-backup
+    executor:
+      provider: mysqldump
+      databases:
+        - fndb
+    storage:
+      provider: s3
+      secretRef:
+        name: {{ .Release.Name }}-mysql-backup
+      config:
+        endpoint: {{ .Values.mysql_operator.backup.endpoint }}
+        region: {{ .Values.mysql_operator.backup.region }}
+        bucket: {{ .Values.mysql_operator.backup.bucket }}
 
 {{ end -}}
 {{ end -}}
