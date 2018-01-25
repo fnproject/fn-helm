@@ -29,8 +29,8 @@ spec:
           ports:
             - containerPort: 4000
           env:
-          - name: FN_PORT
-            value: "4000"
+          - name: PORT
+            value: "80"
           - name: FN_API_URL
             value: http://{{ template "fullname" . }}-api
         - name: flow-ui
