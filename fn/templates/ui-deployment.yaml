@@ -27,10 +27,10 @@ spec:
           resources:
 {{ toYaml .Values.ui.fnui.resources | indent 12 }}
           ports:
-            - containerPort: 4000
+            - containerPort: {{ .Values.ui.service.fnuiPort }}
           env:
           - name: PORT
-            value: "80"
+            value: "{{ .Values.ui.service.fnuiPort }}"
           - name: FN_API_URL
             value: http://{{ template "fullname" . }}-api
         - name: flow-ui
@@ -39,7 +39,7 @@ spec:
           resources:
 {{ toYaml .Values.ui.flowui.resources | indent 12 }}
           ports:
-            - containerPort: 3000
+            - containerPort: {{ .Values.ui.service.flowuiPort }}
           env:
             - name: API_URL
               value: http://{{ template "fullname" . }}-api
