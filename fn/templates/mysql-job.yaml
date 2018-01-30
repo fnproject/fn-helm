@@ -30,11 +30,12 @@ spec:
           set -ex
           printenv
           sleep 30
-          mysqladmin -h {{ .Release.Name }}-mysql --user=root --password=$DB_ROOT_PASSWD ping
-          mysql -h {{ .Release.Name }}-mysql --user=root --password=$DB_ROOT_PASSWD --batch --skip-column-names <<-EOF
+          mysqladmin -h {{ .Release.Name }}-mysql-0.{{ .Release.Name }}-mysql --user=root --password=$DB_ROOT_PASSWD ping
+          mysql -h {{ .Release.Name }}-mysql-0.{{ .Release.Name }}-mysql --user=root --password=$DB_ROOT_PASSWD --batch --skip-column-names <<-EOF
           	create database if not exists $DB_DATABASE;
           	grant all privileges on $DB_DATABASE.* to '$DB_USER'@'%' identified by '$DB_PASSWD';
           	flush privileges;
+          	show databases;
           	EOF
         env:
           - name: DB_PASSWD
