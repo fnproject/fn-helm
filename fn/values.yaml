@@ -1,6 +1,9 @@
 # Default values for Fn
 imagePullPolicy: Always
 
+# If non-null, will override the cluster name
+nameOverride: ''
+
 fn:
   service:
     port: 80
@@ -9,6 +12,8 @@ fn:
 
 fnlb:
   image: fnproject/fnlb:latest
+  logLevel: info
+  resources: {}
 
 fnserver:
   image: fnproject/fnserver:latest
