@@ -10,6 +10,6 @@ jobs:
             curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | sudo bash
       - run:
           command: |
-            helm lint fn
+            helm lint --strict  fn
 
 
