@@ -6,6 +6,7 @@ metadata:
   name: {{ .Release.Name }}-mysql
 spec:
   replicas: {{ .Values.mysql_operator.replicas }}
+  multiMaster: true
 
 ---
 
