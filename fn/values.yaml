@@ -33,7 +33,7 @@ ui:
     resources: {}
   service:
     flowuiPort: 3000
-    fnuiPort: 4000
+    fnuiPort: 80
     type: LoadBalancer
     annotations: {}
 
