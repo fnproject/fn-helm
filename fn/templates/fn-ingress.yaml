@@ -1,0 +1,38 @@
+{{- if .Values.fn.ingress.enabled -}}
+{{- $serviceName := printf "%s-api" (include "fullname" .) -}}
+{{- $servicePort := .Values.fn.service.port -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "fullname" . }}-api
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+  annotations:
+    {{- range $key, $value := .Values.fn.ingress.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+{{- if .Values.fn.ingress.hosts }}
+  rules:
+    {{- range $host := .Values.fn.ingress.hosts }}
+    - host: {{ $host.name }}
+      http:
+        paths:
+          - path: {{ default "/" $host.path }}
+            backend:
+              serviceName: {{ $serviceName }}
+              servicePort: {{ $servicePort }}
+    {{- end -}}
+{{- else }}
+  backend:
+    serviceName: {{ $serviceName }}
+    servicePort: {{ $servicePort }}
+{{- end }}
+  {{- if .Values.fn.ingress.tls }}
+  tls:
+{{ toYaml .Values.fn.ingress.tls | indent 4 }}
+  {{- end -}}
+{{- end -}}

@@ -1,0 +1,26 @@
+{{- if .Values.flowui.enabled }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-flow-ui
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+{{- if .Values.flowui.service.annotations }}
+  annotations:
+{{ toYaml .Values.flowui.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.flowui.service.type }}
+  ports:
+    - name: flow-ui
+      port: {{ default "3000" .Values.flowui.service.externalPort }}
+      targetPort: {{ default "3000" .Values.flowui.service.internalPort }}
+  selector:
+    app: {{ template "fullname" . }}
+    role: flow-ui
+
+{{- end }}

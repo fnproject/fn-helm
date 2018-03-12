@@ -1,0 +1,26 @@
+{{- if .Values.fnui.enabled }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-ui
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+{{- if .Values.fnui.service.annotations }}
+  annotations:
+{{ toYaml .Values.fnui.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.fnui.service.type }}
+  ports:
+    - name: fn-ui
+      port: {{ default "80" .Values.fnui.service.externalPort }}
+      targetPort: {{ default "4000" .Values.fnui.service.internalPort }}
+  selector:
+    app: {{ template "fullname" . }}
+    role: fn-ui
+
+{{- end }}

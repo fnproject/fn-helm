@@ -4,17 +4,6 @@ imagePullPolicy: Always
 # If non-null, will override the cluster name
 nameOverride: ''
 
-fn:
-  service:
-    port: 80
-    type: LoadBalancer
-    annotations: {}
-
-fnlb:
-  image: fnproject/fnlb:latest
-  logLevel: info
-  resources: {}
-
 fnserver:
   image: fnproject/fnserver:latest
   logLevel: info
@@ -23,19 +12,96 @@ fnserver:
   tolerations: []
 
 
-ui:
-  enabled: true
-  fnui:
-    image: fnproject/ui:latest
-    resources: {}
-  flowui:
-    image: fnproject/flow:ui
-    resources: {}
+fn:
   service:
-    flowuiPort: 3000
-    fnuiPort: 80
+    port: 80
     type: LoadBalancer
     annotations: {}
+  ingress:
+    # Used to create an Ingress record.
+    enabled: false
+    hosts:
+      # Array of host rules
+#       - name: fn-api.local
+#         path: /
+    annotations:
+#       kubernetes.io/ingress.class: nginx
+#       kubernetes.io/tls-acme: "true"
+    tls:
+#       Secrets must be manually created in the namespace.
+#       - secretName: fn-api-tls
+#         hosts:
+#         - fn-api.local
+
+
+fnui:
+  ## enable or disable Fn UI
+  enabled: true
+
+  ## Number of fn-iu replicas
+  replicaCount: 1
+
+  ## FN UI image version
+  ## ref: https://hub.docker.com/r/fnproject/ui/tags/
+  ##
+  ## Default: none
+  image:
+    repository: fnproject/ui
+    tag: latest
+
+  ## Specify an imagePullPolicy (Required)
+  ## It's recommended to change this to 'Always' if the image tag is 'latest'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#updating-images
+  imagePullPolicy: Always
+
+  service:
+    internalPort: 4000
+    externalPort: 80
+
+    ## Kubernetes service type
+    type: ClusterIP
+
+    ## Specify the nodePort value for the LoadBalancer and NodePort service types.
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+    ##
+    # nodePort:
+
+    ## Provide any additional annotations which may be required. This can be used to
+    ## set the LoadBalancer service type to internal only.
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+    ##
+    # annotations:
+
+  ingress:
+    # Used to create an Ingress record.
+    enabled: false
+    hosts:
+      # Array of host rules
+#       - name: fn.local
+#         path: /
+    annotations:
+#       kubernetes.io/ingress.class: nginx
+#       kubernetes.io/tls-acme: "true"
+    tls:
+      # Secrets must be manually created in the namespace.
+#       - secretName: fn-tls
+#         hosts:
+#           - fn.local
+
+
+  ## Configure resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 150m
+
+
+fnlb:
+  image: fnproject/fnlb:latest
+  logLevel: info
+  resources: {}
 
 
 flow:
@@ -45,7 +111,86 @@ flow:
     port: 80
     type: ClusterIP
     annotations: {}
+  ingress:
+    # Used to create an Ingress record.
+    enabled: false
+    hosts:
+      # Array of host rules
+#       - name: flow.local
+#         path: /
+    annotations:
+#       kubernetes.io/ingress.class: nginx
+#       kubernetes.io/tls-acme: "true"
+    tls:
+      # Secrets must be manually created in the namespace.
+      # - secretName: flow-tls
+      #   hosts:
+      #     - flow.local
+
   resources: {}
+
+
+flowui:
+  ## enable or disable Flow UI
+  enabled: true
+
+  ## Number of flow-iu replicas
+  replicaCount: 1
+
+  ## FN Flow UI image version
+  ## ref: https://hub.docker.com/r/fnproject/flow/tags/
+  ##
+  ## Default: none
+  image:
+    repository: fnproject/flow
+    tag: ui
+
+  ## Specify an imagePullPolicy (Required)
+  ## It's recommended to change this to 'Always' if the image tag is 'latest'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#updating-images
+  imagePullPolicy: Always
+
+  service:
+    internalPort: 3000
+    externalPort: 80
+
+    ## Kubernetes service type
+    type: LoadBalancer
+
+    ## Specify the nodePort value for the LoadBalancer and NodePort service types.
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+    ##
+    # nodePort:
+
+    ## Provide any additional annotations which may be required. This can be used to
+    ## set the LoadBalancer service type to internal only.
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+    ##
+    # annotations:
+
+  ingress:
+    # Used to create an Ingress record.
+    enabled: false
+    hosts:
+      # Array of host rules
+#       - name: flow-ui.local
+#         path: /
+    annotations:
+#       kubernetes.io/ingress.class: nginx
+#       kubernetes.io/tls-acme: "true"
+    tls:
+      # Secrets must be manually created in the namespace.
+      # - secretName: flow-ui-tls
+      #   hosts:
+      #     - flow-ui.local
+
+  ## Configure resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 150m
 
 
 ##
@@ -78,9 +223,3 @@ redis:
     accessMode: ReadWriteOnce
     size: 8Gi
   usePassword: false
-
-## Ingress configuration.
-## ref: https://kubernetes.io/docs/user-guide/ingress/
-##
-ingress:
-  enabled: false

@@ -1,0 +1,38 @@
+{{- if .Values.fnui.enabled }}
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-ui
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.fnui.replicaCount }}
+  template:
+    metadata:
+       labels:
+         app: {{ template "fullname" . }}
+         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+         heritage: {{ .Release.Service }}
+         release: {{ .Release.Name }}
+         role: fn-ui
+    spec:
+      containers:
+        - name: fn-ui
+          image: "{{ .Values.fnui.image.repository }}:{{ .Values.fnui.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
+          ports:
+            - containerPort: {{ .Values.fnui.service.internalPort }}
+          env:
+          - name: PORT
+            value: "{{ default "4000" .Values.fnui.service.internalPort }}"
+          - name: FN_API_URL
+            value: http://{{ template "fullname" . }}-api
+
+          resources:
+{{ toYaml .Values.fnui.resources | indent 12 }}
+
+{{- end}}

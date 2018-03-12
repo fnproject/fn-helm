@@ -1,0 +1,37 @@
+{{- if .Values.flowui.enabled }}
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-flow-ui
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.flowui.replicaCount }}
+  template:
+    metadata:
+       labels:
+         app: {{ template "fullname" . }}
+         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+         heritage: {{ .Release.Service }}
+         release: {{ .Release.Name }}
+         role: flow-ui
+    spec:
+      containers:
+        - name: flow-ui
+          image: "{{ .Values.flowui.image.repository }}:{{ .Values.flowui.image.tag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy | quote }}
+          ports:
+            - containerPort: {{ .Values.flowui.service.internalPort }}
+          env:
+            - name: API_URL
+              value: http://{{ template "fullname" . }}-api
+            - name: COMPLETER_BASE_URL
+              value: http://{{ template "fullname" . }}-flow
+          resources:
+{{ toYaml .Values.flowui.resources | indent 12 }}
+
+{{- end}}
