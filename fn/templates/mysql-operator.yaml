@@ -1,0 +1,38 @@
+{{- if .Values.mysql_operator.enabled -}}
+
+apiVersion: mysql.oracle.com/v1
+kind: MySQLCluster
+metadata:
+  name: {{ .Release.Name }}-mysql
+spec:
+  replicas: {{ .Values.mysql_operator.replicas }}
+  multiMaster: true
+
+---
+
+{{- if .Values.mysql_operator.backup.enabled -}}
+
+apiVersion: "mysql.oracle.com/v1"
+kind: MySQLBackupSchedule
+metadata:
+  name: {{ .Release.Name }}-mysql-backup-schedule
+spec:
+  schedule: {{ .Values.mysql_operator.backup.schedule | quote }}
+  backupTemplate:
+    clusterRef:
+      name: {{ .Release.Name }}-mysql
+    executor:
+      provider: mysqldump
+      databases:
+        - fndb
+    storage:
+      provider: s3
+      secretRef:
+        name: {{ .Release.Name }}-mysql-backup
+      config:
+        endpoint: {{ .Values.mysql_operator.backup.endpoint }}
+        region: {{ .Values.mysql_operator.backup.region }}
+        bucket: {{ .Values.mysql_operator.backup.bucket }}
+
+{{ end -}}
+{{ end -}}

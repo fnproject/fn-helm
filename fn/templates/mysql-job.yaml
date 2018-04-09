@@ -1,0 +1,60 @@
+{{- if .Values.mysql_operator.enabled -}}
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "fullname" . }}-mysql-init
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  template:
+    metadata:
+      name: {{ template "fullname" . }}-mysql-init
+      labels:
+        app: {{ template "fullname" . }}
+        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        heritage: {{ .Release.Service }}
+        release: {{ .Release.Name }}
+        role: mysql-init
+    spec:
+      containers:
+      - name: c
+        image: mysql
+        command: 
+        - "bash"
+        - "-c"
+        - |
+          set -ex
+          printenv
+          sleep 30
+          mysqladmin -h {{ .Release.Name }}-mysql-0.{{ .Release.Name }}-mysql --user=root --password=$DB_ROOT_PASSWD ping
+          mysql -h {{ .Release.Name }}-mysql-0.{{ .Release.Name }}-mysql --user=root --password=$DB_ROOT_PASSWD --batch --skip-column-names <<-EOF
+          	create database if not exists $DB_DATABASE;
+          	grant all privileges on $DB_DATABASE.* to '$DB_USER'@'%' identified by '$DB_PASSWD';
+          	flush privileges;
+          	show databases;
+          	EOF
+        env:
+          - name: DB_PASSWD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-mysql
+                key: mysql-password
+          - name: DB_ROOT_PASSWD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-mysql-root-password
+                key: password
+          - name: DB_HOST
+            value: {{ .Release.Name }}-mysql
+          - name: DB_DATABASE
+            value: fndb
+          - name: DB_USER
+            value: fnapp
+      restartPolicy: Never
+  backoffLimit: 600
+
+{{ end -}}
