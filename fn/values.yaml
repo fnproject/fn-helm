@@ -18,6 +18,7 @@ fnlb:
 fnserver:
   image: fnproject/fnserver:latest
   logLevel: info
+  splitWorkers: false
   resources: {}
   nodeSelector: {}
   tolerations: []
