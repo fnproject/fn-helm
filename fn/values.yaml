@@ -84,6 +84,3 @@ redis:
 ##
 ingress:
   enabled: false
-
-rbac:
-  enabled: false
