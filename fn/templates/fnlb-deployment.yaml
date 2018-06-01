@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: fnlb
-          image: {{ .Values.fnlb.image }}
+          image: {{ .Values.fnlb.image }}:{{ .Values.fnlb.tag }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources:
 {{ toYaml .Values.fnlb.resources | indent 12 }}

@@ -11,25 +11,28 @@ fn:
     annotations: {}
 
 fnlb:
-  image: fnproject/fnlb:latest
+  image: fnproject/fnlb
+  tag: 0.0.268
   logLevel: info
   resources: {}
 
 fnserver:
-  image: fnproject/fnserver:latest
+  image: fnproject/fnserver
+  tag: 0.3.461
   logLevel: info
   resources: {}
   nodeSelector: {}
   tolerations: []
 
-
 ui:
   enabled: true
   fnui:
-    image: fnproject/ui:latest
+    image: fnproject/ui
+    tag: 0.0.26
     resources: {}
   flowui:
-    image: fnproject/flow:ui
+    image: fnproject/flow
+    tag: ui
     resources: {}
   service:
     flowuiPort: 3000
@@ -37,16 +40,15 @@ ui:
     type: LoadBalancer
     annotations: {}
 
-
 flow:
-  image: fnproject/flow:latest
+  image: fnproject/flow
+  tag: 0.1.83
   logLevel: info
   service:
     port: 80
     type: ClusterIP
     annotations: {}
   resources: {}
-
 
 ##
 ## MySQL chart configuration
