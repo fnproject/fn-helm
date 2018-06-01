@@ -44,8 +44,8 @@ spec:
         env:
         {{- range $key, $value := .Values.fnserver.env }}
           {{- if $value }}
-          - name: {{ $key }}
-            value: {{ $value | quote }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
           {{- end }}
         {{- end }}
         - name: FN_DB_PASSWD
