@@ -42,12 +42,10 @@ spec:
           initialDelaySeconds: 3
           periodSeconds: 3
         env:
-        {{- range $key, $value := .Values.fnserver.env }}
-          {{- if $value }}
-        - name: {{ $key }}
-          value: {{ $value | quote }}
-          {{- end }}
-        {{- end }}
+        - name: LOG_LEVEL
+          value: {{ .Values.fnserver.logLevel }}
+        - name: FN_PORT
+          value: "80"
         - name: FN_DB_PASSWD
           valueFrom:
             secretKeyRef:
@@ -55,6 +53,8 @@ spec:
               key: mysql-password
         - name: FN_DB_HOST
           value: {{ .Release.Name }}-mysql
+        - name: FN_DB_URL
+          value: mysql://fnapp:$(FN_DB_PASSWD)@tcp($(FN_DB_HOST):3306)/fndb
         - name: FN_MQ_HOST
           value: {{ .Release.Name }}-redis
 #  TODO:
@@ -63,3 +63,5 @@ spec:
 #            secretKeyRef:
 #              name: {{ .Release.Name }}-redis
 #              key: redis-password
+        - name: FN_MQ_URL
+          value: redis://$(FN_MQ_HOST):6379/
