@@ -19,11 +19,33 @@ fnlb:
 fnserver:
   image: fnproject/fnserver
   tag: 0.3.461
-  logLevel: info
   resources: {}
   nodeSelector: {}
   tolerations: []
-
+  env: 
+    FN_DB_URL: mysql://fnapp:$(FN_DB_PASSWD)@tcp($(FN_DB_HOST):3306)/fndb
+    FN_MQ_URL: redis://$(FN_MQ_HOST):6379/
+    FN_PORT: 80
+    FN_LOG_LEVEL: info
+    FN_LOG_DEST: ""
+    FN_LOG_PREFIX: ""
+    FN_LOGSTORE_URL: ""
+    FN_API_CORS_ORIGINS: ""
+    FN_API_CORS_HEADERS: ""
+    FN_FREEZE_IDLE_MSECS: ""
+    FN_EJECT_IDLE_MSECS: ""
+    FN_MAX_RESPONSE_SIZE: ""
+    FN_RUNNER_API_URL: ""
+    FN_RUNNER_ADDRESSES: ""
+    FN_NODE_TYPE: ""
+    FN_GRPC_PORT: ""
+    FN_ZIPKIN_URL: ""
+    FN_JAEGER_URL: ""
+    FN_NODE_CERT: ""
+    FN_NODE_CERT_KEY: ""
+    FN_NODE_CERT_AUTHORITY: ""
+    FN_PROCESS_COLLECTOR_LIST: ""
+    FN_PLACER: ""
 
 ui:
   enabled: true
