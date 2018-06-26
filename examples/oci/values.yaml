@@ -16,3 +16,7 @@ redis:
    persistence:
       enabled: true
       existingClaim: tc-fn-redis
+
+
+rbac:
+  enabled: true

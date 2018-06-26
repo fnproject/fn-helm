@@ -32,6 +32,8 @@ Install chart dependencies from [requirements.yaml](./fn/requirements.yaml):
 helm dep build fn
 ```
 
+The default chart will install fn as a private service inside your cluster with ephemeral storage, to configure a public endpoint and persistent storage you should look at [values.yaml](values.yaml) and modify the default settings. An example for Oracle Cloud Infrastructure is [here](examples/oci).
+
 To install the chart with the release name `my-release`:
 
 ```bash
