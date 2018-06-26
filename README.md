@@ -23,7 +23,7 @@ helm init
 Clone the fn-helm repo:
 
 ```bash
-git clone git@github.com:fnproject/fn-helm.git && cd fn-helm
+git clone https://github.com/fnproject/fn-helm.git && cd fn-helm
 ```
 
 Install chart dependencies from [requirements.yaml](./fn/requirements.yaml):
