@@ -23,7 +23,7 @@ helm init
 Clone the fn-helm repo:
 
 ```bash
-git clone git@github.com:fnproject/fn-helm.git && cd fn-helm
+git clone https://github.com/fnproject/fn-helm.git && cd fn-helm
 ```
 
 Install chart dependencies from [requirements.yaml](./fn/requirements.yaml):
@@ -31,6 +31,8 @@ Install chart dependencies from [requirements.yaml](./fn/requirements.yaml):
 ```bash
 helm dep build fn
 ```
+
+The default chart will install fn as a private service inside your cluster with ephemeral storage, to configure a public endpoint and persistent storage you should look at [values.yaml](values.yaml) and modify the default settings. An example for Oracle Cloud Infrastructure is [here](examples/oci).
 
 To install the chart with the release name `my-release`:
 

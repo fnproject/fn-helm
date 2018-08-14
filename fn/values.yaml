@@ -111,4 +111,4 @@ ingress:
   enabled: false
 
 rbac:
-  enabled: false
+  enabled: true
