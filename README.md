@@ -53,7 +53,7 @@ helm delete --purge my-release
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
 
-## Configuration 
+## Configuration
 
 |  Key                           |  Description                      |  Default              |
 | -------------------------------|-----------------------------------|-----------------------|
@@ -70,18 +70,18 @@ The command removes all the Kubernetes components associated with the chart and 
 | `ui.service.flowuiPort`        | Fn Flow UI port for ui service    | `3000`                |
 | `ui.service.fnuiPort`          | Fn UI port for ui service         | `4000`                |
 | `ui.service.type`              | UI Service type                   | `LoadBalancer`        |
-| `rbac.enabled`                 | Whether to enable RBAC with a specific cluster role and binding for Fn | `false`                            |
+| `rbac.enabled`                 | Whether to enable RBAC with a specific cluster role and binding for Fn | `true`                            |
 | `mysql.*`                      | See the [MySQL chart docs](https://github.com/kubernetes/charts/tree/master/stable/mysql) | |
 | `redis.*`                      | See the [Redis chart docs](https://github.com/kubernetes/charts/tree/master/stable/redis) | |
- 
- ## Configuring Database Persistence 
- 
+
+ ## Configuring Database Persistence
+
 Fn persists application data in MySQL. This is configured using the MySQL Helm Chart.
 
 By default this uses container storage. To configure a persistent volume, set `mysql.*` values in the chart values to that which corresponds to your storage requirements.
 
 e.g. to use an existing persistent volume claim for MySQL storage:
 
-```bash 
+```bash
 helm install --name testfn --set mysql.persistence.enabled=true,mysql.persistence.existingClaim=tc-fn-mysql fn
 ```
