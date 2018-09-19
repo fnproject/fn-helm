@@ -18,11 +18,11 @@ fnlb:
 
 fnserver:
   image: fnproject/fnserver
-  tag: 0.3.461
+  tag: 0.3.570
   resources: {}
   nodeSelector: {}
   tolerations: []
-  env: 
+  env:
     FN_DB_URL: mysql://fnapp:$(FN_DB_PASSWD)@tcp($(FN_DB_HOST):3306)/fndb
     FN_MQ_URL: redis://$(FN_MQ_HOST):6379/
     FN_PORT: 80
