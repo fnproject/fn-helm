@@ -19,9 +19,6 @@ spec:
     - name: flow-ui
       port: {{ default "3000" .Values.ui.service.flowuiPort }}
       targetPort: {{ default "3000" .Values.ui.service.flowuiPort }}
-    - name: fn-ui
-      port: {{ default "4000" .Values.ui.service.fnuiPort }}
-      targetPort: {{ default "4000" .Values.ui.service.fnuiPort }}
   selector:
     app: {{ template "fullname" . }}
     role: ui

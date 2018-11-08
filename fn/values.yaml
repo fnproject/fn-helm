@@ -18,7 +18,7 @@ fnlb:
 
 fnserver:
   image: fnproject/fnserver
-  tag: 0.3.570
+  tag: 0.3.612
   resources: {}
   nodeSelector: {}
   tolerations: []
@@ -49,27 +49,22 @@ fnserver:
 
 ui:
   enabled: true
-  fnui:
-    image: fnproject/ui
-    tag: 0.0.26
-    resources: {}
   flowui:
     image: fnproject/flow
     tag: ui
     resources: {}
   service:
     flowuiPort: 3000
-    fnuiPort: 80
     type: LoadBalancer
     annotations: {}
 
 flow:
   image: fnproject/flow
-  tag: 0.1.83
+  tag: 0.1.85
   logLevel: info
   service:
     port: 80
-    type: ClusterIP
+    type: LoadBalancer
     annotations: {}
   resources: {}
 
