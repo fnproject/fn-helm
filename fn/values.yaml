@@ -4,7 +4,27 @@ imagePullPolicy: Always
 # If non-null, will override the cluster name
 nameOverride: ''
 
-fn:
+fn_runner:
+  image: fnproject/fnserver
+  tag: latest
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  container_port: 80
+  grpc_port: 9191
+  service:
+    port: 80
+    type: ClusterIP
+    annotations: {}
+
+fn_lb_runner:
+  image: fnproject/fnserver
+  tag: latest
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  container_port: 80
+  grpc_port: 9191
   service:
     port: 80
     type: LoadBalancer
@@ -17,30 +37,10 @@ fn_api:
   nodeSelector: {}
   tolerations: []
   container_port: 80
-
-# todo: range over number of replicatas
-fn_runner:
-  replicas: 2
-  image: fnproject/fnserver
-  tag: latest
-  resources: {}
-  nodeSelector: {}
-  tolerations: []
-  container_port: 80
   service:
     port: 80
-    type: ClusterIP
+    type: LoadBalancer
     annotations: {}
-
-
-# todo: split fnserver to: api, runner(s), lb
-fnserver:
-  image: fnproject/fnserver
-  tag: latest
-  resources: {}
-  nodeSelector: {}
-  tolerations: []
-  container_port: 80
   env:
     FN_DB_URL: mysql://fnapp:$(FN_DB_PASSWD)@tcp($(FN_DB_HOST):3306)/fndb
     FN_MQ_URL: redis://$(FN_MQ_HOST):6379/

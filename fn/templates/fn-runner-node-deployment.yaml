@@ -17,24 +17,24 @@ spec:
         release: {{ .Release.Name }}
         role: fn-runner
     spec:
-      {{- if .Values.fnserver.nodeSelector }}
+      {{- if .Values.fn_runner.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.fnserver.nodeSelector | indent 8 }}
+{{ toYaml .Values.fn_runner.nodeSelector | indent 8 }}
 {{- end }}
-      {{- if .Values.fnserver.tolerations }}
+      {{- if .Values.fn_runner.tolerations }}
       tolerations:
-{{ toYaml .Values.fnserver.tolerations | indent 8 }}
+{{ toYaml .Values.fn_runner.tolerations | indent 8 }}
 {{- end }}
       containers:
         - name: fn-runner
-          image: {{ .Values.fnserver.image }}:{{ .Values.fnserver.tag }}
+          image: {{ .Values.fn_runner.image }}:{{ .Values.fn_runner.tag }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources:
-{{ toYaml .Values.fnserver.resources | indent 12 }}
+{{ toYaml .Values.fn_runner.resources | indent 12 }}
           securityContext:
             privileged: true
           ports:
-          - containerPort: 8082
+          - containerPort: {{ .Values.fn_runner.container_port }}
           env:
           - name: FN_IOFS_PATH
             value: "/app/data/iofs"
@@ -43,6 +43,8 @@ spec:
           - name: FN_NODE_TYPE
             value: "pure-runner"
           - name: FN_GRPC_PORT
-            value: "9190"
+            value: {{ .Values.fn_runner.grpc_port | quote }}
           - name: FN_PORT
-            value: "8082"
+            value: {{ .Values.fn_runner.container_port | quote }}
+          - name: FN_LOG_LEVEL
+            value: "DEBUG"

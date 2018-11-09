@@ -9,14 +9,14 @@ metadata:
     release: {{ .Release.Name }}
 {{- if .Values.fn_runner.service.annotations }}
   annotations:
-{{ toYaml .Values.fn.service.annotations | indent 4 }}
+{{ toYaml .Values.fn_runner.service.annotations | indent 4 }}
 {{- end }}
 spec:
   type: {{ .Values.fn_runner.service.type }}
   ports:
-    - name: fn_runner
+    - name: fn-runner
       port: {{ .Values.fn_runner.service.port }}
-      targetPort: {{ .Values.fn_runner.service.port }}
+      targetPort: {{ .Values.fn_runner.container_port }}
   selector:
     app: {{ template "fullname" . }}
-    role: fn-runner-service
+    role: fn-runner

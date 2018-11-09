@@ -18,36 +18,38 @@ spec:
          release: {{ .Release.Name }}
          role: fn-lb
     spec:
-      {{- if .Values.fnserver.nodeSelector }}
+      {{- if .Values.fn_lb_runner.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.fnserver.nodeSelector | indent 8 }}
+{{ toYaml .Values.fn_lb_runner.nodeSelector | indent 8 }}
 {{- end }}
-      {{- if .Values.fnserver.tolerations }}
+      {{- if .Values.fn_lb_runner.tolerations }}
       tolerations:
-{{ toYaml .Values.fnserver.tolerations | indent 8 }}
+{{ toYaml .Values.fn_lb_runner.tolerations | indent 8 }}
 {{- end }}
       containers:
         - name: fn-lb
-          image: {{ .Values.fnserver.image }}:{{ .Values.fnserver.tag }}
+          image: {{ .Values.fn_lb_runner.image }}:{{ .Values.fn_lb_runner.tag }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources:
-{{ toYaml .Values.fnserver.resources | indent 12 }}
+{{ toYaml .Values.fn_lb_runner.resources | indent 12 }}
           securityContext:
             privileged: true
           ports:
-          - containerPort: 8081
+          - containerPort: {{ .Values.fn_lb_runner.container_port }}
           env:
           - name: FN_NODE_TYPE
             value: "lb"
           - name: FN_GRPC_PORT
-            value: "9191"
+            value: {{ .Values.fn_lb_runner.grpc_port | quote }}
           - name: FN_PORT
-            value: "8081"
+            value: {{ .Values.fn_lb_runner.container_port | quote }}
           - name: RUNNER_HOST
-            value: {{ template "fullname" . }}-fn-api
+            value: {{ template "fullname" . }}-api
           - name: RUNNER_PORT
-            value: {{ .Values.fnserver.container_port | quote }}
+            value: {{ .Values.fn_lb_runner.container_port | quote }}
           - name: FN_RUNNER_API_URL
             value: http://$(RUNNER_HOST):$(RUNNER_PORT)
           - name: FN_RUNNER_ADDRESSES
-            value: {{ template "fullname" . }}-runner:9190
+            value: {{ template "fullname" . }}-runner:{{ .Values.fn_runner.service.port }}
+          - name: FN_LOG_LEVEL
+            value: "DEBUG"

@@ -18,28 +18,28 @@ spec:
          release: {{ .Release.Name }}
          role: fn-api
     spec:
-      {{- if .Values.fnserver.nodeSelector }}
+      {{- if .Values.fn_api.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.fnserver.nodeSelector | indent 8 }}
+{{ toYaml .Values.fn_api.nodeSelector | indent 8 }}
 {{- end }}
-      {{- if .Values.fnserver.tolerations }}
+      {{- if .Values.fn_api.tolerations }}
       tolerations:
-{{ toYaml .Values.fnserver.tolerations | indent 8 }}
+{{ toYaml .Values.fn_api.tolerations | indent 8 }}
 {{- end }}
       containers:
         - name: fn-api
-          image: {{ .Values.fnserver.image }}:{{ .Values.fnserver.tag }}
+          image: {{ .Values.fn_api.image }}:{{ .Values.fn_api.tag }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources:
-{{ toYaml .Values.fnserver.resources | indent 12 }}
+{{ toYaml .Values.fn_api.resources | indent 12 }}
           securityContext:
             privileged: true
           ports:
-          - containerPort: {{ .Values.fnserver.container_port }}
+          - containerPort: {{ .Values.fn_api.container_port }}
           readinessProbe:
             httpGet:
               path: /v2/apps
-              port: {{ .Values.fnserver.container_port }}
+              port: {{ .Values.fn_api.container_port }}
             initialDelaySeconds: 3
             periodSeconds: 3
           env:
@@ -53,10 +53,10 @@ spec:
           - name: FN_MQ_HOST
             value: {{ .Release.Name }}-redis
           - name: FN_PORT
-            value: {{ .Values.fnserver.container_port | quote }}
+            value: {{ .Values.fn_api.container_port | quote }}
           - name: FN_NODE_TYPE
             value: "api"
-          {{- range $key, $value := .Values.fnserver.env }}
+          {{- range $key, $value := .Values.fn_api.env }}
             {{- if $value }}
           - name: {{ $key }}
             value: {{ $value | quote }}

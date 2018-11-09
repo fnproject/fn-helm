@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-lb
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+{{- if .Values.fn_lb_runner.service.annotations }}
+  annotations:
+{{ toYaml .Values.fn_lb_runner.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.fn_lb_runner.service.type }}
+  ports:
+  - name: fn
+    port: {{ .Values.fn_lb_runner.service.port }}
+    targetPort: {{ .Values.fn_lb_runner.container_port }}
+  selector:
+    app: {{ template "fullname" . }}
+    role: fn-lb
