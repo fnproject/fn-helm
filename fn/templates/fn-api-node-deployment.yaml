@@ -55,7 +55,7 @@ spec:
           - name: FN_PORT
             value: {{ .Values.fnserver.container_port | quote }}
           - name: FN_NODE_TYPE
-            value: "full"
+            value: "api"
           {{- range $key, $value := .Values.fnserver.env }}
             {{- if $value }}
           - name: {{ $key }}

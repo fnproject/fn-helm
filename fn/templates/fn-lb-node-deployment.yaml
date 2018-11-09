@@ -1,0 +1,53 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-lb
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+       labels:
+         app: {{ template "fullname" . }}
+         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+         heritage: {{ .Release.Service }}
+         release: {{ .Release.Name }}
+         role: fn-lb
+    spec:
+      {{- if .Values.fnserver.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.fnserver.nodeSelector | indent 8 }}
+{{- end }}
+      {{- if .Values.fnserver.tolerations }}
+      tolerations:
+{{ toYaml .Values.fnserver.tolerations | indent 8 }}
+{{- end }}
+      containers:
+        - name: fn-lb
+          image: {{ .Values.fnserver.image }}:{{ .Values.fnserver.tag }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          resources:
+{{ toYaml .Values.fnserver.resources | indent 12 }}
+          securityContext:
+            privileged: true
+          ports:
+          - containerPort: 8081
+          env:
+          - name: FN_NODE_TYPE
+            value: "lb"
+          - name: FN_GRPC_PORT
+            value: "9191"
+          - name: FN_PORT
+            value: "8081"
+          - name: RUNNER_HOST
+            value: {{ template "fullname" . }}-fn-api
+          - name: RUNNER_PORT
+            value: {{ .Values.fnserver.container_port | quote }}
+          - name: FN_RUNNER_API_URL
+            value: http://$(RUNNER_HOST):$(RUNNER_PORT)
+          - name: FN_RUNNER_ADDRESSES
+            value: {{ template "fullname" . }}-runner:9190
