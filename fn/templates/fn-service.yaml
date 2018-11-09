@@ -16,7 +16,7 @@ spec:
   ports:
   - name: fn
     port: {{ .Values.fn.service.port }}
-    targetPort: 8081
+    targetPort: 80
   selector:
     app: {{ template "fullname" . }}
-    role: fn-lb
+    role: fn-api

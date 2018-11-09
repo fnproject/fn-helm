@@ -10,22 +10,16 @@ fn:
     type: LoadBalancer
     annotations: {}
 
-fnlb:
-  image: fnproject/fnlb
-  tag: 0.0.268
-  logLevel: info
-  resources: {}
-
 fnserver:
   image: fnproject/fnserver
-  tag: 0.3.612
+  tag: latest
   resources: {}
   nodeSelector: {}
   tolerations: []
+  container_port: 80
   env:
     FN_DB_URL: mysql://fnapp:$(FN_DB_PASSWD)@tcp($(FN_DB_HOST):3306)/fndb
     FN_MQ_URL: redis://$(FN_MQ_HOST):6379/
-    FN_PORT: 80
     FN_LOG_LEVEL: info
     FN_LOG_DEST: ""
     FN_LOG_PREFIX: ""
@@ -37,7 +31,6 @@ fnserver:
     FN_MAX_RESPONSE_SIZE: ""
     FN_RUNNER_API_URL: ""
     FN_RUNNER_ADDRESSES: ""
-    FN_NODE_TYPE: ""
     FN_GRPC_PORT: ""
     FN_ZIPKIN_URL: ""
     FN_JAEGER_URL: ""
@@ -64,7 +57,7 @@ flow:
   logLevel: info
   service:
     port: 80
-    type: LoadBalancer
+    type: ClusterIP
     annotations: {}
   resources: {}
 
