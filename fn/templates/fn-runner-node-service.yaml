@@ -14,9 +14,12 @@ metadata:
 spec:
   type: {{ .Values.fn_runner.service.type }}
   ports:
-    - name: fn-runner
-      port: {{ .Values.fn_runner.service.port }}
-      targetPort: {{ .Values.fn_runner.container_port }}
+    - name: grpc
+      port: {{ .Values.fn_runner.http_port }}
+      targetPort: {{ .Values.fn_runner.service.http_port }}
+    - name: http
+      port: {{ .Values.fn_runner.service.grpc_port }}
+      targetPort: {{ .Values.fn_runner.service.grpc_port }}
   selector:
     app: {{ template "fullname" . }}
     role: fn-runner

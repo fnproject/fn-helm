@@ -16,7 +16,7 @@ spec:
          chart: {{ .Chart.Name }}-{{ .Chart.Version }}
          heritage: {{ .Release.Service }}
          release: {{ .Release.Name }}
-         role: fn-lb
+         role: fn-runner
     spec:
       {{- if .Values.fn_lb_runner.nodeSelector }}
       nodeSelector:
@@ -43,13 +43,9 @@ spec:
             value: {{ .Values.fn_lb_runner.grpc_port | quote }}
           - name: FN_PORT
             value: {{ .Values.fn_lb_runner.container_port | quote }}
-          - name: RUNNER_HOST
-            value: {{ template "fullname" . }}-api
-          - name: RUNNER_PORT
-            value: {{ .Values.fn_lb_runner.container_port | quote }}
           - name: FN_RUNNER_API_URL
-            value: http://$(RUNNER_HOST):$(RUNNER_PORT)
+            value: http://{{ template "fullname" . }}-api.{{.Release.Namespace}}.svc.cluster.local:{{ .Values.fn_api.container_port}}
           - name: FN_RUNNER_ADDRESSES
-            value: {{ template "fullname" . }}-runner:{{ .Values.fn_runner.service.port }}
+            value: {{ template "fullname" . }}-runner.{{.Release.Namespace}}.svc.cluster.local:{{.Values.fn_runner.service.grpc_port}}
           - name: FN_LOG_LEVEL
             value: "DEBUG"

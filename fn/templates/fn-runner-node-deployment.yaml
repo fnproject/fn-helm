@@ -1,21 +1,22 @@
-apiVersion: extensions/v1beta1
-kind: DaemonSet
+apiVersion: apps/v1beta1
+kind: Deployment
 metadata:
   name: {{ template "fullname" . }}-runner
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
 spec:
-  updateStrategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-  minReadySeconds: 10
+  replicas: {{ .Values.fn_runner.replicas }}
   template:
     metadata:
-      labels:
-        app: {{ template "fullname" . }}
-        chart: {{ .Chart.Name }}-{{ .Chart.Version }}
-        heritage: {{ .Release.Service }}
-        release: {{ .Release.Name }}
-        role: fn-runner
+       labels:
+         app: {{ template "fullname" . }}
+         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+         heritage: {{ .Release.Service }}
+         release: {{ .Release.Name }}
+         role: fn-runner
     spec:
       {{- if .Values.fn_runner.nodeSelector }}
       nodeSelector:
@@ -34,7 +35,10 @@ spec:
           securityContext:
             privileged: true
           ports:
-          - containerPort: {{ .Values.fn_runner.container_port }}
+          - containerPort: {{ .Values.fn_runner.grpc_port }}
+            name: grpc
+          - containerPort: {{ .Values.fn_runner.http_port }}
+            name: http
           env:
           - name: FN_IOFS_PATH
             value: "/app/data/iofs"
@@ -45,6 +49,6 @@ spec:
           - name: FN_GRPC_PORT
             value: {{ .Values.fn_runner.grpc_port | quote }}
           - name: FN_PORT
-            value: {{ .Values.fn_runner.container_port | quote }}
+            value: {{ .Values.fn_runner.http_port | quote }}
           - name: FN_LOG_LEVEL
             value: "DEBUG"

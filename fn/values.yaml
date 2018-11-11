@@ -5,15 +5,17 @@ imagePullPolicy: Always
 nameOverride: ''
 
 fn_runner:
+  replicas: 3
   image: fnproject/fnserver
   tag: latest
   resources: {}
   nodeSelector: {}
   tolerations: []
-  container_port: 80
+  http_port: 80
   grpc_port: 9191
   service:
-    port: 80
+    http_port: 80
+    grpc_port: 9191
     type: ClusterIP
     annotations: {}
 
