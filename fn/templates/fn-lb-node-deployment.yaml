@@ -44,8 +44,12 @@ spec:
           - name: FN_PORT
             value: {{ .Values.fn_lb_runner.container_port | quote }}
           - name: FN_RUNNER_API_URL
-            value: http://{{ template "fullname" . }}-api.{{.Release.Namespace}}.svc.cluster.local:{{ .Values.fn_api.container_port}}
+            value: http://{{ template "fullname" . }}-api:{{ .Values.fn_api.service.port}}
           - name: FN_RUNNER_ADDRESSES
-            value: {{ template "fullname" . }}-runner.{{.Release.Namespace}}.svc.cluster.local:{{.Values.fn_runner.service.grpc_port}}
-          - name: FN_LOG_LEVEL
-            value: "DEBUG"
+            value: {{$.Release.Name}}-{{$.Chart.Name}}-runner.{{$.Release.Namespace}}.svc.cluster.local:{{$.Values.fn_runner.service.grpc_port}}
+          {{- range $key, $value := .Values.fn_lb_runner.env }}
+            {{- if $value }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}

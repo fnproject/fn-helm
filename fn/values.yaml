@@ -11,13 +11,13 @@ fn_runner:
   resources: {}
   nodeSelector: {}
   tolerations: []
-  http_port: 80
   grpc_port: 9191
   service:
-    http_port: 80
     grpc_port: 9191
     type: ClusterIP
     annotations: {}
+  env:
+    FN_LOG_LEVEL: INFO
 
 fn_lb_runner:
   image: fnproject/fnserver
@@ -31,6 +31,8 @@ fn_lb_runner:
     port: 80
     type: LoadBalancer
     annotations: {}
+  env:
+    FN_LOG_LEVEL: INFO
 
 fn_api:
   image: fnproject/fnserver

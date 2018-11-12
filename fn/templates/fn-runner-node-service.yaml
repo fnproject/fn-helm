@@ -15,10 +15,7 @@ spec:
   type: {{ .Values.fn_runner.service.type }}
   ports:
     - name: grpc
-      port: {{ .Values.fn_runner.http_port }}
-      targetPort: {{ .Values.fn_runner.service.http_port }}
-    - name: http
-      port: {{ .Values.fn_runner.service.grpc_port }}
+      port: {{ .Values.fn_runner.grpc_port }}
       targetPort: {{ .Values.fn_runner.service.grpc_port }}
   selector:
     app: {{ template "fullname" . }}
