@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}-api
+  name: {{ template "fullname" . }}
   labels:
     app: {{ template "fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -16,7 +16,7 @@ spec:
          chart: {{ .Chart.Name }}-{{ .Chart.Version }}
          heritage: {{ .Release.Service }}
          release: {{ .Release.Name }}
-         role: fn-api
+         role: fn-service
     spec:
       {{- if .Values.fn_api.nodeSelector }}
       nodeSelector:
@@ -59,6 +59,32 @@ spec:
           - name: FN_PUBLIC_LB_URL
             value: http://{{ .Values.fn_lb_runner.service.public_dns_name }}:{{ .Values.fn_lb_runner.service.port }}
           {{- range $key, $value := .Values.fn_api.env }}
+            {{- if $value }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}
+        - name: fn-lb
+          image: {{ .Values.fn_lb_runner.image }}:{{ .Values.fn_lb_runner.tag }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          resources:
+{{ toYaml .Values.fn_lb_runner.resources | indent 12 }}
+          securityContext:
+            privileged: true
+          ports:
+          - containerPort: {{ .Values.fn_lb_runner.container_port }}
+          env:
+          - name: FN_NODE_TYPE
+            value: "lb"
+          - name: FN_GRPC_PORT
+            value: {{ .Values.fn_lb_runner.grpc_port | quote }}
+          - name: FN_PORT
+            value: {{ .Values.fn_lb_runner.container_port | quote }}
+          - name: FN_RUNNER_API_URL
+            value: http://{{ template "fullname" . }}:{{ .Values.fn_api.service.port}}
+          - name: FN_RUNNER_ADDRESSES
+            value: {{ template "fullname" . }}-runner.{{$.Release.Namespace}}.svc.cluster.local:{{ .Values.fn_lb_runner.service.port }}
+          {{- range $key, $value := .Values.fn_lb_runner.env }}
             {{- if $value }}
           - name: {{ $key }}
             value: {{ $value | quote }}

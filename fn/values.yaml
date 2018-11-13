@@ -25,11 +25,11 @@ fn_lb_runner:
   resources: {}
   nodeSelector: {}
   tolerations: []
-  container_port: 80
+  container_port: 90
   grpc_port: 9191
   service:
-    public_dns_name: lb.fnservice.io
-    port: 80
+    public_dns_name: api.fnservice.io
+    port: 90
     type: LoadBalancer
     annotations: {}
   env:
