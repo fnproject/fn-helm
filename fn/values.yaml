@@ -4,6 +4,9 @@ imagePullPolicy: Always
 # If non-null, will override the cluster name
 nameOverride: ''
 
+lb_dns_name: lb.fnservice.io
+api_dns_name: api.fnservice.io
+
 fn_runner:
   replicas: 3
   image: fnproject/fnserver
@@ -28,7 +31,6 @@ fn_lb_runner:
   container_port: 90
   grpc_port: 9191
   service:
-    public_dns_name: api.fnservice.io
     port: 90
     type: LoadBalancer
     annotations: {}
