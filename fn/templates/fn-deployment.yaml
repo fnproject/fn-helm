@@ -83,7 +83,7 @@ spec:
           - name: FN_RUNNER_API_URL
             value: http://{{ template "fullname" . }}.{{$.Release.Namespace}}.svc.cluster.local:{{ .Values.fn_api.service.port}}
           - name: FN_RUNNER_ADDRESSES
-            value: {{ template "fullname" . }}-runner.{{$.Release.Namespace}}.svc.cluster.local:{{ .Values.fn_lb_runner.service.port }}
+            value: {{ template "fullname" . }}-runner.{{$.Release.Namespace}}.svc.cluster.local:{{ .Values.fn_runner.service.grpc_port }}
           {{- range $key, $value := .Values.fn_lb_runner.env }}
             {{- if $value }}
           - name: {{ $key }}

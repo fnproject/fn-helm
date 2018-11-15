@@ -37,10 +37,6 @@ spec:
           ports:
           - containerPort: {{ .Values.fn_runner.grpc_port }}
           env:
-          - name: FN_IOFS_PATH
-            value: "/app/data/iofs"
-          - name: FN_IOFS_DOCKER_PATH
-            value: "/data/iofs"
           - name: FN_NODE_TYPE
             value: "pure-runner"
           - name: FN_GRPC_PORT
