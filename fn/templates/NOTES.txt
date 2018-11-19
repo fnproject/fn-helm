@@ -1,3 +1,6 @@
+Your K8s cluster MUST have configured with NGINX ingress controller.
+See https://github.com/helm/charts/tree/master/stable/nginx-ingress.
+
 The Fn service can be accessed within your cluster at:
 
  - http://{{template  "fullname" .}}:{{ .Values.fn_api.service.port}}
@@ -11,12 +14,12 @@ You can watch for EXTERNAL-IP to populate by running:
 Then you need to update your DNS service with a new records (one for an API service, one for LB service)/
 You need to map:
 
-    - {{ .Values.api_dns_name }} to $(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn_api.service.port }}
-    - {{ .Values.lb_dns_name }} to $(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn_lb_runner.service.port }}
+    - {{ .Values.fn_api.service.ingress_hostname }} to $(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn_api.service.port }}
+    - {{ .Values.fn_lb_runner.service.ingress_hostname }} to $(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn_lb_runner.service.port }}
 
 Then you need to create Fn CLI context:
 
-    fn create context {{ template "fullname" . }} --api-url http://{{ .Values.api_dns_name }}:{{ .Values.fn_api.service.port }} --provider default --registry <your-docker-registry>
+    fn create context {{ template "fullname" . }} --api-url http://{{ .Values.fn_api.service.ingress_hostname }}:{{ .Values.fn_api.service.port }} --provider default --registry <your-docker-registry>
     fn use context {{ template "fullname" . }}
 
 Next thing would be to test the connectivity between your host and the deployment using simple API query:

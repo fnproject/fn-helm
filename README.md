@@ -67,7 +67,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `flow.service.port`            | Flow Service port                 | `80`                  |
 | `flow.service.annotations`     | Flow Service annotations          | `{}`                  |
 | `ui.enabled`                   | Enable UI components              | `true`                |
-| `ui.service.flowuiPort`        | Fn Flow UI port for ui service    | `3000`                |
+| `ui.service.port`        | Fn Flow UI port for ui service    | `3000`                |
 | `ui.service.fnuiPort`          | Fn UI port for ui service         | `4000`                |
 | `ui.service.type`              | UI Service type                   | `LoadBalancer`        |
 | `rbac.enabled`                 | Whether to enable RBAC with a specific cluster role and binding for Fn | `false`                            |

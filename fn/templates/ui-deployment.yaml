@@ -27,7 +27,7 @@ spec:
           resources:
 {{ toYaml .Values.ui.flowui.resources | indent 12 }}
           ports:
-            - containerPort: {{ .Values.ui.service.flowuiPort }}
+            - containerPort: {{ .Values.ui.service.port }}
           env:
             - name: API_URL
               value: http://{{ template "fullname" . }}-api
