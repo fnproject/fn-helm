@@ -1,3 +1,4 @@
+{{- if eq .Values.ingress.enabled true }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -34,7 +35,11 @@ spec:
         backend:
           serviceName: {{ template "fullname" . }}-ui
           servicePort: {{ .Values.ui.service.port }}
-  {{- if .Values.ingress.tls }}
+  {{- if eq .Values.tls.enabled true }}
   tls:
-{{ toYaml .Values.fn.ingress.tls | indent 4 }}
+    - secretName: {{ .Values.tls.secret_reference }}
+      hosts:
+        - {{ .Values.fn_api.service.ingress_hostname }}
+        - {{ .Values.fn_lb_runner.service.ingress_hostname }}
   {{- end -}}
+{{- end -}}

@@ -1,6 +1,9 @@
 Your K8s cluster MUST have configured with NGINX ingress controller.
 See https://github.com/helm/charts/tree/master/stable/nginx-ingress.
 
+For SSL/TLS support please take a look at:
+https://medium.com/oracledevs/secure-your-kubernetes-services-using-cert-manager-nginx-ingress-and-lets-encrypt-888c8b996260
+
 The Fn service can be accessed within your cluster at:
 
  - http://{{template  "fullname" .}}:{{ .Values.fn_api.service.port}}

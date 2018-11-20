@@ -8,11 +8,16 @@ This chart deploys a fully functioning instance of the [Fn](https://github.com/f
 
 ## Prerequisites
 
-- PV provisioner support in the underlying infrastructure (for persistent data, see below )
+- persistent volume provisioning support in the underlying infrastructure (for persistent data, see below )
 
 - Install [Helm](https://github.com/kubernetes/helm#install)
 
 - Initialize Helm by installing Tiller, the server portion of Helm, to your Kubernetes cluster
+
+- [Ingress controller](https://github.com/helm/charts/tree/master/stable/nginx-ingress)
+
+- [Cert manager](https://medium.com/oracledevs/secure-your-kubernetes-services-using-cert-manager-nginx-ingress-and-lets-encrypt-888c8b996260)
+
 
 ```bash
 helm init
