@@ -1,0 +1,49 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}-runner
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.fn_runner.replicas }}
+  template:
+    metadata:
+       labels:
+         app: {{ template "fullname" . }}
+         chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+         heritage: {{ .Release.Service }}
+         release: {{ .Release.Name }}
+         role: fn-runner
+    spec:
+      {{- if .Values.fn_runner.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.fn_runner.nodeSelector | indent 8 }}
+{{- end }}
+      {{- if .Values.fn_runner.tolerations }}
+      tolerations:
+{{ toYaml .Values.fn_runner.tolerations | indent 8 }}
+{{- end }}
+      containers:
+        - name: fn-runner
+          image: {{ .Values.fn_runner.image }}:{{ .Values.fn_runner.tag }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          resources:
+{{ toYaml .Values.fn_runner.resources | indent 12 }}
+          securityContext:
+            privileged: true
+          ports:
+          - containerPort: {{ .Values.fn_runner.grpc_port }}
+          env:
+          - name: FN_NODE_TYPE
+            value: "pure-runner"
+          - name: FN_GRPC_PORT
+            value: {{ .Values.fn_runner.grpc_port | quote }}
+          {{- range $key, $value := .Values.fn_runner.env }}
+            {{- if $value }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}
