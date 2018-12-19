@@ -19,6 +19,7 @@ You need to map:
 
     - {{ .Values.fn_api.service.ingress_hostname }} to $(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn_api.service.port }}
     - {{ .Values.fn_lb_runner.service.ingress_hostname }} to $(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.fn_lb_runner.service.port }}
+    - {{ .Values.ui.service.ingress_hostname }} to $(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'):{{ .Values.ui.service.port }}
 
 Then you need to create Fn CLI context:
 
