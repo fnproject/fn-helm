@@ -80,7 +80,7 @@ ui:
     port: 3000
     type: ClusterIP
     annotations: {}
-    ingress_hostname: ui.fnservice.io
+    ingress_hostname: <ui-dns-name>
 
 flow:
   image: fnproject/flow
