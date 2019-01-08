@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fullname" . }}-runner
+  labels:
+    app: {{ template "fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+{{- if .Values.fn_runner.service.annotations }}
+  annotations:
+{{ toYaml .Values.fn_runner.service.annotations | indent 4 }}
+{{- end }}
+spec:
+  type: {{ .Values.fn_runner.service.type }}
+  ports:
+    - name: grpc
+      port: {{ .Values.fn_runner.grpc_port }}
+      targetPort: {{ .Values.fn_runner.service.grpc_port }}
+  selector:
+    app: {{ template "fullname" . }}
+    role: fn-runner

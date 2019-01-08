@@ -12,7 +12,6 @@ home: http://fnproject.io/
 icon: http://fnproject.io/images/fn-300x125.png
 sources:
 - https://github.com/fnproject/fn
-- https://github.com/fnproject/ui
 - https://github.com/fnproject/flow
 - https://github.com/fnproject/flowui
 maintainers:
