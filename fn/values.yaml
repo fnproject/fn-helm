@@ -4,7 +4,8 @@ imagePullPolicy: Always
 # If non-null, will override the cluster name
 nameOverride: ''
 
-# Secrets must be manually created in the namespace.
+## Ingress configuration.
+## ref: https://kubernetes.io/docs/user-guide/ingress/
 ingress:
   enabled: true
   annotations:
@@ -79,7 +80,7 @@ ui:
     port: 3000
     type: ClusterIP
     annotations: {}
-    ingress_hostname: ui.fnservice.io
+    ingress_hostname: <ui-dns-name>
 
 flow:
   image: fnproject/flow
@@ -121,12 +122,6 @@ redis:
     accessMode: ReadWriteOnce
     size: 8Gi
   usePassword: false
-
-## Ingress configuration.
-## ref: https://kubernetes.io/docs/user-guide/ingress/
-##
-ingress:
-  enabled: false
 
 rbac:
   enabled: true
