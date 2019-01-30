@@ -22,18 +22,20 @@ tls:
   server: https://acme-staging-v02.api.letsencrypt.org/directory
 
 
+# Fn runner deployment definition
+# Nodes in this deployment responsible for the functions execution
 fn_runner:
-  replicas: 3
-  image: fnproject/fnserver
-  tag: latest
-  resources: {}
-  nodeSelector: {}
-  tolerations: []
-  grpc_port: 9191
+  replicas: 3 # number of replicas of Fn runner to deploy, recommended: 3 or greater
+  image: fnproject/fnserver # Fn server image
+  tag: latest # Fn server image tag
+  resources: {} # K8s computation resources
+  nodeSelector: {} # K8s node selectors
+  tolerations: [] #K8s mode taint toleration
+  grpc_port: 9191 # Fn runner node GRPC port
   service:
-    grpc_port: 9191
-    type: ClusterIP
-    annotations: {}
+    grpc_port: 9191 # Fn runner service GRPC port
+    type: ClusterIP # Fn runner service type
+    annotations: {} # Fn runner service annotations
   env:
     FN_LOG_LEVEL: INFO
 
@@ -43,13 +45,13 @@ fn_lb_runner:
   resources: {}
   nodeSelector: {}
   tolerations: []
-  container_port: 90
+  container_port: 90 # Fn runner LB container port
   grpc_port: 9191
   service:
-    port: 90
+    port: 90 # Fn runner LB service port to expose
     type: ClusterIP
     annotations: {}
-    ingress_hostname: <lb-dns-name>
+    ingress_hostname: lb.fn.internal # Ingress controller routing host, can be random URL host.
   env:
     FN_LOG_LEVEL: INFO
 
@@ -59,12 +61,12 @@ fn_api:
   resources: {}
   nodeSelector: {}
   tolerations: []
-  container_port: 80
+  container_port: 80 # Fn API container port
   service:
-    port: 80
+    port: 80 # Fn API service port to expose
     type: ClusterIP
     annotations: {}
-    ingress_hostname: <api-dns-name>
+    ingress_hostname: api.fn.internal
   env:
     FN_DB_URL: mysql://fnapp:$(FN_DB_PASSWD)@tcp($(FN_DB_HOST):3306)/fndb
     FN_MQ_URL: redis://$(FN_MQ_HOST):6379/
@@ -80,7 +82,7 @@ ui:
     port: 3000
     type: ClusterIP
     annotations: {}
-    ingress_hostname: <ui-dns-name>
+    ingress_hostname: ui.fn.internal
 
 flow:
   image: fnproject/flow
