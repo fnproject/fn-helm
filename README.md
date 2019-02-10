@@ -28,17 +28,17 @@ helm init --upgrade
 ### Minimum configuration
 
 In order to get a working deployment please pay attention to what you have in your chart values.
-[Here](fn/values.yaml) you may find bare minimum chart values configuration necessary to deploy a working Fn cluster.
+[Here](fn/values.yaml) is the bare minimum chart configuration to deploy a working Fn cluster.
 
 ### Exposing Fn services
 
 #### Ingress controller
 
-If you are installing Fn behind an ingress controller you'd need to have only 1 DNS sub-domain that will stand for an ingress controller IP resolve.
+If you are installing Fn behind an ingress controller, you'll need to have a single DNS subdomain that will act as your ingress controllers IP resolution.
 
-Please pay attention, an ingress controller works as a proxy, it means that you can use ingress IP address as an HTTP proxy:
+Important: An ingress controller works as a proxy, so you can use the ingress IP address as an HTTP proxy:
 
-```
+```bash
 curl -x http://<ingress-controller-endpoint>:80 api.fn.internal 
 {"goto":"https://github.com/fnproject/fn","hello":"world!"}
 ```
@@ -46,7 +46,7 @@ curl -x http://<ingress-controller-endpoint>:80 api.fn.internal
 
 #### LoadBalancer
 
-In order to use native way to expose Fn services you'd need to modify Fn API, Fn runner LB and UI service definitions:
+In order to natively expose the Fn services, you'll need to modify the Fn API, Runner, and UI service definitions:
 
  - at `fn_api` node values, modify `fn_api.service.type` from `ClusterIP` to `LoadBalancer`
  - at `fn_lb_runner` node values, modify `fn_lb_runner.service.type` from `ClusterIP` to `LoadBalancer`
@@ -55,17 +55,17 @@ In order to use native way to expose Fn services you'd need to modify Fn API, Fn
 
 #### DNS names
 
-In Fn deployment with LoadBalancer service types, you'd need 3 DNS names:
+In an Fn deployment with LoadBalancer service types, you'll need 3 DNS names:
 
  - one for an API service (i.e., `api.fn.mydomain.com`)
  - one for runner LB service (i.e., `lb.fn.mydomain.com`)
  - one for UI service (i.e., `ui.fn.mydomain.com`)
 
-With the successful deployment you'd have 3 public IP addresses for each of services.
-However, an IP address for API and LB services would be identical since they are expose as a single service.
-So, you'd have 2 IP address, but 3 DNS names.
+Upon successful deployment, you'll have three public IP addresses -- one for each service.
+However, the IP address for the API and LB services will be identical since they are exposed as a single service.
+You'll have two IP addresses, but three DNS names.
 
-But still, the best way for exposing services is an **ingress controller**.
+Please keep in mind the best way for exposing services is an **ingress controller**.
 
 ## Installing the Chart
 
@@ -94,9 +94,9 @@ helm install --name my-release fn
 
 #### Ingress controller
 
-Please ensure that your ingress controller is running and has public-facing IP address.
-All you need to know that an ingress controller acts as a proxy between internal and public networks.
-So, in order to talk to Fn deployment you'd need to set HTTP_PROXY env var or use cURL:
+Please ensure that your ingress controller is running and has a public-facing IP address.
+An ingress controller acts as a proxy between your internal and public networks.
+Therefore in order to talk to your Fn Deployment, you'll need to set the `HTTP_PROXY` environment variable or use cURL like so:
 
 ```bash
 curl -x http://<ingress-controller-endpoint>:80 api.fn.internal
@@ -115,7 +115,7 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ## Configuration 
 
-For the detailed configuration please see [default chart values](fn/values.yaml).
+For detailed configuration, please see [default chart values](fn/values.yaml).
 
  ## Configuring Database Persistence 
  
