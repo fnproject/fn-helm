@@ -20,8 +20,52 @@ This chart deploys a fully functioning instance of the [Fn](https://github.com/f
 
 
 ```bash
-helm init
+helm init --upgrade
 ```
+
+## Preparing chart values
+
+### Minimum configuration
+
+In order to get a working deployment please pay attention to what you have in your chart values.
+[Here](fn/values.yaml) is the bare minimum chart configuration to deploy a working Fn cluster.
+
+### Exposing Fn services
+
+#### Ingress controller
+
+If you are installing Fn behind an ingress controller, you'll need to have a single DNS subdomain that will act as your ingress controllers IP resolution.
+
+Important: An ingress controller works as a proxy, so you can use the ingress IP address as an HTTP proxy:
+
+```bash
+curl -x http://<ingress-controller-endpoint>:80 api.fn.internal 
+{"goto":"https://github.com/fnproject/fn","hello":"world!"}
+```
+
+
+#### LoadBalancer
+
+In order to natively expose the Fn services, you'll need to modify the Fn API, Runner, and UI service definitions:
+
+ - at `fn_api` node values, modify `fn_api.service.type` from `ClusterIP` to `LoadBalancer`
+ - at `fn_lb_runner` node values, modify `fn_lb_runner.service.type` from `ClusterIP` to `LoadBalancer`
+ - at `ui` node values, modify `ui.service.type` from `ClusterIP` to `LoadBalancer`
+
+
+#### DNS names
+
+In an Fn deployment with LoadBalancer service types, you'll need 3 DNS names:
+
+ - one for an API service (i.e., `api.fn.mydomain.com`)
+ - one for runner LB service (i.e., `lb.fn.mydomain.com`)
+ - one for UI service (i.e., `ui.fn.mydomain.com`)
+
+Upon successful deployment, you'll have three public IP addresses -- one for each service.
+However, the IP address for the API and LB services will be identical since they are exposed as a single service.
+You'll have two IP addresses, but three DNS names.
+
+Please keep in mind the best way for exposing services is an **ingress controller**.
 
 ## Installing the Chart
 
@@ -46,6 +90,18 @@ helm install --name my-release fn
 
 > Note: if you do not pass the --name flag, a release name will be auto-generated. You can view releases by running helm list (or helm ls, for short).
 
+## Working with Fn 
+
+#### Ingress controller
+
+Please ensure that your ingress controller is running and has a public-facing IP address.
+An ingress controller acts as a proxy between your internal and public networks.
+Therefore in order to talk to your Fn Deployment, you'll need to set the `HTTP_PROXY` environment variable or use cURL like so:
+
+```bash
+curl -x http://<ingress-controller-endpoint>:80 api.fn.internal
+{"goto":"https://github.com/fnproject/fn","hello":"world!"}
+```
 
 ## Uninstalling the Fn Helm Chart
 
@@ -59,25 +115,8 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ## Configuration 
 
-|  Key                           |  Description                      |  Default              |
-| -------------------------------|-----------------------------------|-----------------------|
-| `fn.service.type`        | ClusterIP, NodePort, LoadBalancer | `LoadBalancer`        |
-| `fn.service.port`        | Fn service port                   | `80`                  |
-| `fn.service.annotations` | Fn Service annotations            | `{}`                  |
-| `fnserver.resources`           | Per-node resource requests, see [Kubernetes Pod Resources](http://kubernetes.io/docs/user-guide/compute-resources/)            | `{}`                  |
-| `fnserver.nodeSelector`        | Fn node selectors, see [Kubernetes Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`                  |
-| `fnserver.tolerations`         | Node taint tolerations, see [Kubernetes Taints and Tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`             |
-| `flow.service.type`            | ClusterIP, NodePort, LoadBalancer | `ClusterIP`           |
-| `flow.service.port`            | Flow Service port                 | `80`                  |
-| `flow.service.annotations`     | Flow Service annotations          | `{}`                  |
-| `ui.enabled`                   | Enable UI components              | `true`                |
-| `ui.service.port`        | Fn Flow UI port for ui service    | `3000`                |
-| `ui.service.fnuiPort`          | Fn UI port for ui service         | `4000`                |
-| `ui.service.type`              | UI Service type                   | `LoadBalancer`        |
-| `rbac.enabled`                 | Whether to enable RBAC with a specific cluster role and binding for Fn | `false`                            |
-| `mysql.*`                      | See the [MySQL chart docs](https://github.com/kubernetes/charts/tree/master/stable/mysql) | |
-| `redis.*`                      | See the [Redis chart docs](https://github.com/kubernetes/charts/tree/master/stable/redis) | |
- 
+For detailed configuration, please see [default chart values](fn/values.yaml).
+
  ## Configuring Database Persistence 
  
 Fn persists application data in MySQL. This is configured using the MySQL Helm Chart.
