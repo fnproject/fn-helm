@@ -28,7 +28,13 @@ fn_runner:
   replicas: 3 # number of replicas of Fn runner to deploy, recommended: 3 or greater
   image: fnproject/fnserver # Fn server image
   tag: latest # Fn server image tag
-  resources: {} # K8s computation resources
+  resources: # K8s computation resources
+    requests:
+      memory: "1Gi"
+      cpu: "250m"
+    limits:
+      memory: "5Gi"
+      cpu: "500m"
   nodeSelector: {} # K8s node selectors
   tolerations: [] #K8s mode taint toleration
   grpc_port: 9191 # Fn runner node GRPC port
@@ -42,7 +48,13 @@ fn_runner:
 fn_lb_runner:
   image: fnproject/fnserver
   tag: latest
-  resources: {}
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "150m"
+    limits:
+      memory: "2Gi"
+      cpu: "300m"
   nodeSelector: {}
   tolerations: []
   container_port: 90 # Fn runner LB container port
@@ -58,7 +70,13 @@ fn_lb_runner:
 fn_api:
   image: fnproject/fnserver
   tag: latest
-  resources: {}
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "150m"
+    limits:
+      memory: "2Gi"
+      cpu: "300m"
   nodeSelector: {}
   tolerations: []
   container_port: 80 # Fn API container port
@@ -92,7 +110,13 @@ flow:
     port: 80
     type: ClusterIP
     annotations: {}
-  resources: {}
+  resources: # K8s computation resources
+    requests:
+      memory: "1Gi"
+      cpu: "250m"
+    limits:
+      memory: "5Gi"
+      cpu: "500m"
 
 ##
 ## MySQL chart configuration
