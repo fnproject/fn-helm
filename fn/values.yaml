@@ -110,6 +110,7 @@ flow:
     port: 80
     type: ClusterIP
     annotations: {}
+    ingress_hostname: flow.fn.internal
   resources: # K8s computation resources
     requests:
       memory: "1Gi"

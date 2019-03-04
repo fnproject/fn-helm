@@ -31,10 +31,18 @@ spec:
   - host: {{ .Values.ui.service.ingress_hostname }}
     http:
       paths:
-      - path: /flow
+      - path: /
         backend:
           serviceName: {{ template "fullname" . }}-ui
           servicePort: {{ .Values.ui.service.port }}
+  - host: {{ .Values.flow.service.ingress_hostname }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ template "fullname" . }}-flow
+          servicePort: {{ .Values.flow.service.port }}
+
   {{- if eq .Values.tls.enabled true }}
   tls:
     - secretName: {{ .Values.tls.secret_reference }}
