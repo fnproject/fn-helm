@@ -10,7 +10,7 @@ The Fn service can be accessed within your cluster at:
 
 Then you need to update your environment variable `HTTP_HOST` with the corresponding ingress controller endpoint or an IP address:
 
-    export {HTTP,HTTPS}_proxy=$(kubectl get svc <ingress-nginx-ingress-controller> -o jsonpath='http://{.status.loadBalancer.ingress[0].ip}:80')
+    export {HTTP,HTTPS}_PROXY=$(kubectl get svc <ingress-nginx-ingress-controller> -o jsonpath='http://{.status.loadBalancer.ingress[0].ip}:80')
 
 
 Then you need to create Fn CLI context:
