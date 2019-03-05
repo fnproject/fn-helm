@@ -14,27 +14,35 @@ metadata:
     {{- end }}
 spec:
   rules:
-  - host: {{ .Values.fn_api.service.ingress_hostname }}
+  - host: {{ template "fullname" . }}.{{ .Values.fn_api.service.ingress_hostname }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ template "fullname" . }}
           servicePort: {{ .Values.fn_api.service.port }}
-  - host: {{ .Values.fn_lb_runner.service.ingress_hostname }}
+  - host: {{ template "fullname" . }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ template "fullname" . }}
           servicePort: {{ .Values.fn_lb_runner.service.port }}
-  - host: {{ .Values.ui.service.ingress_hostname }}
+  - host: {{ template "fullname" . }}.{{ .Values.ui.service.ingress_hostname }}
     http:
       paths:
-      - path: /flow
+      - path: /
         backend:
           serviceName: {{ template "fullname" . }}-ui
           servicePort: {{ .Values.ui.service.port }}
+  - host: {{ template "fullname" . }}.{{ .Values.flow.service.ingress_hostname }}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: {{ template "fullname" . }}-flow
+          servicePort: {{ .Values.flow.service.port }}
+
   {{- if eq .Values.tls.enabled true }}
   tls:
     - secretName: {{ .Values.tls.secret_reference }}
