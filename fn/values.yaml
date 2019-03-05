@@ -95,7 +95,13 @@ ui:
   flowui:
     image: fnproject/flow
     tag: ui
-    resources: {}
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "150m"
+      limits:
+        memory: "2Gi"
+        cpu: "300m"
   service:
     port: 3000
     type: ClusterIP
