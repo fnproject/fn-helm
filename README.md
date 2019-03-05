@@ -34,7 +34,7 @@ In order to get a working deployment please pay attention to what you have in yo
 
 #### Ingress controller
 
-If you are installing Fn behind an ingress controller, you'll need to have a single DNS subdomain that will act as your ingress controllers IP resolution.
+If you are installing Fn behind an ingress controller, you'll need to have a single DNS sub-domain that will act as your ingress controllers IP resolution.
 
 Important: An ingress controller works as a proxy, so you can use the ingress IP address as an HTTP proxy:
 
