@@ -47,7 +47,7 @@ spec:
   tls:
     - secretName: {{ .Values.tls.secret_reference }}
       hosts:
-        - {{ .Values.fn_api.service.ingress_hostname }}
-        - {{ .Values.fn_lb_runner.service.ingress_hostname }}
+        - {{ template "fullname" . }}{{ .Values.fn_api.service.ingress_hostname }}
+        - {{ template "fullname" . }}{{ .Values.fn_lb_runner.service.ingress_hostname }}
   {{- end -}}
 {{- end -}}
