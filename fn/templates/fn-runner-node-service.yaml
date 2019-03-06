@@ -19,4 +19,4 @@ spec:
       targetPort: {{ .Values.fn_runner.service.grpc_port }}
   selector:
     app: {{ template "fullname" . }}
-    role: fn-runner
+    role: runner

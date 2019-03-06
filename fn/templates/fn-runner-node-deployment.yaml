@@ -16,7 +16,7 @@ spec:
          chart: {{ .Chart.Name }}-{{ .Chart.Version }}
          heritage: {{ .Release.Service }}
          release: {{ .Release.Name }}
-         role: fn-runner
+         role: runner
     spec:
       {{- if .Values.fn_runner.nodeSelector }}
       nodeSelector:
@@ -27,7 +27,7 @@ spec:
 {{ toYaml .Values.fn_runner.tolerations | indent 8 }}
 {{- end }}
       containers:
-        - name: fn-runner
+        - name: runner
           image: {{ .Values.fn_runner.image }}:{{ .Values.fn_runner.tag }}
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           resources:

@@ -19,4 +19,4 @@ spec:
       targetPort: 8081
   selector:
     app: {{ template "fullname" . }}
-    role: flow-service
+    role: flow
