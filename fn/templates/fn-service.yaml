@@ -14,10 +14,10 @@ metadata:
 spec:
   type: {{ .Values.fn_api.service.type }}
   ports:
-  - name: fn-api
+  - name: api
     port: {{ .Values.fn_api.service.port }}
     targetPort: {{ .Values.fn_api.container_port }}
-  - name: fn-lb
+  - name: runner-lb
     port: {{ .Values.fn_lb_runner.service.port }}
     targetPort: {{ .Values.fn_lb_runner.container_port }}
   selector:

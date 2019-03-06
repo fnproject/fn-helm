@@ -34,4 +34,4 @@ spec:
             - name: COMPLETER_BASE_URL
               value: http://{{ template "fullname" . }}-flow
 
-{{- end}} # if .Values.ui.enabled
+{{- end}}

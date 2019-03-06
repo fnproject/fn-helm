@@ -2,7 +2,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "fullname" . }}-ingress-rules
   labels:
     app: {{ template "fullname" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -14,28 +14,28 @@ metadata:
     {{- end }}
 spec:
   rules:
-  - host: {{ template "fullname" . }}.{{ .Values.fn_api.service.ingress_hostname }}
+  - host: {{ .Release.Name }}.{{ .Values.fn_api.service.ingress_hostname }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ template "fullname" . }}
           servicePort: {{ .Values.fn_api.service.port }}
-  - host: {{ template "fullname" . }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}
+  - host: {{ .Release.Name }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ template "fullname" . }}
           servicePort: {{ .Values.fn_lb_runner.service.port }}
-  - host: {{ template "fullname" . }}.{{ .Values.ui.service.ingress_hostname }}
+  - host: {{ .Release.Name }}.{{ .Values.ui.service.ingress_hostname }}
     http:
       paths:
       - path: /
         backend:
           serviceName: {{ template "fullname" . }}-ui
           servicePort: {{ .Values.ui.service.port }}
-  - host: {{ template "fullname" . }}.{{ .Values.flow.service.ingress_hostname }}
+  - host: {{ .Release.Name }}.{{ .Values.flow.service.ingress_hostname }}
     http:
       paths:
       - path: /
@@ -47,7 +47,7 @@ spec:
   tls:
     - secretName: {{ .Values.tls.secret_reference }}
       hosts:
-        - {{ template "fullname" . }}.{{ .Values.fn_api.service.ingress_hostname }}
-        - {{ template "fullname" . }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}
+        - {{ .Release.Name }}.{{ .Values.fn_api.service.ingress_hostname }}
+        - {{ .Release.Name }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}
   {{- end -}}
 {{- end -}}

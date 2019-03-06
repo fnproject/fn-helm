@@ -34,7 +34,7 @@ or HTTPS endpoint:
 
 Then you need to create Fn CLI context:
 
-    fn create context {{ template "fullname" . }} --api-url http://{{ template "fullname" . }}.{{ .Values.fn_api.service.ingress_hostname }} --provider default --registry <your-docker-registry>
+    fn create context {{ template "fullname" . }} --api-url http://{{ .Release.Name }}.{{ .Values.fn_api.service.ingress_hostname }} --provider default --registry <your-docker-registry>
     fn use context {{ template "fullname" . }}
 
 Next thing would be to test the connectivity between your host and the deployment using simple API query:
@@ -48,7 +48,7 @@ And the last thing would be to check whether you can call a functions:
     fn --verbose deploy --app first-app
     fn inspect fn first-app first-fn
 
-You need to check an `invokeEndpoint` annotation, it suppose to point to http://{{ template "fullname" . }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}:{{ .Values.fn_lb_runner.service.port }}.
+You need to check an `invokeEndpoint` annotation, it suppose to point to http://{{ .Release.Name }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}:{{ .Values.fn_lb_runner.service.port }}.
 So, you are ready to go:
 
     echo -e '{"name":"john"}' | fn invoke first-app first-fn
