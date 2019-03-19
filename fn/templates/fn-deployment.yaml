@@ -58,9 +58,9 @@ spec:
             value: "api"
           - name: FN_PUBLIC_LB_URL
             {{- if .Values.tls.enabled }}
-            value: https://{{ .Release.Name }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}:{{ .Values.fn_lb_runner.service.port }}
+            value: https://{{ template "fn.public_lb_url" . }}
             {{- else }}
-            value: http://{{ .Release.Name }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}:{{ .Values.fn_lb_runner.service.port }}
+            value: http://{{ template "fn.public_lb_url" . }}
             {{- end }}
           {{- range $key, $value := .Values.fn_api.env }}
             {{- if $value }}

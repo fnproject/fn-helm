@@ -28,3 +28,10 @@ Create a default fully qualified redis name.
 {{- define "redis.fullname" -}}
 {{- printf "%s-%s" .Release.Name "redis" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Assemble the public load balancer URL.
+*/}}
+{{- define "fn.public_lb_url" -}}
+{{- printf "%s.%s:%.0f" .Release.Name .Values.fn_lb_runner.service.ingress_hostname .Values.fn_lb_runner.service.port }}
+{{- end }}
