@@ -57,7 +57,11 @@ spec:
           - name: FN_NODE_TYPE
             value: "api"
           - name: FN_PUBLIC_LB_URL
-            value: http://{{ .Release.Name }}.{{ .Values.fn_lb_runner.service.ingress_hostname }}:{{ .Values.fn_lb_runner.service.port }}
+            {{- if .Values.tls.enabled }}
+            value: https://{{ template "fn.public_lb_url" . }}
+            {{- else }}
+            value: http://{{ template "fn.public_lb_url" . }}
+            {{- end }}
           {{- range $key, $value := .Values.fn_api.env }}
             {{- if $value }}
           - name: {{ $key }}
